@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
   Bookmark,
@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { cities, cityIds } from "./data/catalog";
 import { addDays, daysText, displayDate, money } from "./lib/format";
-import { defaultInput, generateRoutes, totals, validateInput } from "./lib/planner";
+import { defaultInput, totals } from "./lib/planner";
 import { searchLiveRoutes } from "./lib/live-route-search";
 import type { LiveRouteProgress, LiveRouteResult } from "../shared/live-routes";
 import { automaticPreferences } from "./lib/automatic-preferences";
@@ -43,6 +43,7 @@ import { searchOfficialEvents } from "./lib/official-events";
 import OfferPicker from "./components/OfferPicker";
 import { WeatherContext, type WeatherState } from "./components/Weather";
 import { searchWeather } from "./lib/weather-search";
+import { usePlannerTask } from "./lib/use-planner-task";
 import type { WeatherDay } from "../shared/weather";
 import type { VerifiedEvent } from "../shared/events";
 
@@ -90,16 +91,21 @@ export default function App() {
   const matchingEvents = eventState.key === eventKey ? eventState : { status: "idle" as const, key: eventKey };
   const conditionsKey = tripKey(input);
   const [appliedConditions, setAppliedConditions] = useState<{ key: string; dataKey: string; events: VerifiedEvent[]; weather: WeatherDay[] }>({ key: "", dataKey: "", events: [], weather: [] });
-  const preliminary = useMemo(() => generateRoutes(input), [input]);
-  const generated = useMemo(() => appliedConditions.key === conditionsKey ? generateRoutes(input, appliedConditions.events, appliedConditions.weather) : preliminary, [input, preliminary, appliedConditions, conditionsKey]);
+  const comparing = screen === "compare";
+  const conditionsVisible = comparing || screen === "plan";
+  const preliminaryTask = usePlannerTask({ kind: "routes", input }, comparing);
+  const conditionsTask = usePlannerTask({ kind: "routes", input, events: appliedConditions.events, weather: appliedConditions.weather }, comparing && appliedConditions.key === conditionsKey);
+  const preliminary = preliminaryTask.result ?? { plans: [], errors: [] };
+  const localTask = appliedConditions.key === conditionsKey ? conditionsTask : preliminaryTask;
+  const generated = appliedConditions.key === conditionsKey ? conditionsTask.result ?? preliminary : preliminary;
   const [weatherState, setWeatherState] = useState<WeatherState & { key: string; attempt?: number }>({ key: "", status: "idle" });
   const [weatherAttempt, setWeatherAttempt] = useState(0);
   const weatherCities = [...new Set([...preliminary.plans.flatMap(option => option.cities), ...(plan?.cities ?? []), ...input.required])].sort().slice(0,20);
-  const weatherKey = hasExactDates(input) && weatherCities.length ? JSON.stringify({ cities: weatherCities, start: input.startDate, end: addDays(input.startDate, input.days - 1) }) : "";
+  const weatherKey = hasExactDates(input) && weatherCities.length && (!comparing || preliminaryTask.status === "done") ? JSON.stringify({ cities: weatherCities, start: input.startDate, end: addDays(input.startDate, input.days - 1) }) : "";
   const matchingWeather = weatherState.key === weatherKey ? weatherState : { key: weatherKey, status: "idle" as const };
   const conditionsDataKey = JSON.stringify([matchingWeather.result?.updatedAt, matchingEvents.result?.searchedAt]);
   useEffect(() => {
-    if (!weatherKey || !["compare", "plan"].includes(screen)) return;
+    if (!weatherKey || !conditionsVisible) return;
     if (weatherState.key === weatherKey && weatherState.status === "done" && weatherState.attempt === weatherAttempt) return;
     const controller = new AbortController();
     setWeatherState(previous => ({ key: weatherKey, status: "loading", attempt: weatherAttempt, ...(previous.key === weatherKey ? { result: previous.result } : {}) }));
@@ -107,16 +113,16 @@ export default function App() {
       .then(result => { if (!controller.signal.aborted) setWeatherState({ key: weatherKey, status: "done", result, attempt: weatherAttempt }); })
       .catch(error => { if (!controller.signal.aborted) setWeatherState({ key: weatherKey, status: "error", error: error instanceof Error && !["TypeError", "TimeoutError"].includes(error.name) ? error.message : "Не удалось получить погоду. Попробуйте позже." }); });
     return () => controller.abort();
-  }, [weatherKey, screen, weatherAttempt]);
+  }, [weatherKey, conditionsVisible, weatherAttempt]);
   useEffect(() => {
-    if (!eventKey || !["compare", "plan"].includes(screen)) return;
+    if (!eventKey || !conditionsVisible) return;
     if (eventState.key === eventKey && eventState.status === "done" && (eventState.attempt ?? 0) === eventAttempt) return;
     const controller = new AbortController(); setEventState(previous => ({ key: eventKey, status: "loading", attempt: eventAttempt, ...(previous.key === eventKey ? { result: previous.result } : {}) }));
     void searchOfficialEvents({ cities: cityIds, start: input.startDate, end: addDays(input.startDate, input.days - 1) }, controller.signal)
       .then(result => { if (!controller.signal.aborted) setEventState({ key: eventKey, status: "done", result, attempt: eventAttempt }); })
       .catch(error => { if (!controller.signal.aborted) setEventState({ key: eventKey, status: "error", error: error instanceof Error && error.name !== "TypeError" ? error.message : "Не удалось проверить официальную афишу." }); });
     return () => controller.abort();
-  }, [eventKey, screen, eventAttempt]);
+  }, [eventKey, conditionsVisible, eventAttempt]);
   const matchingLive = live.key === tripKey(input);
   const liveResult = matchingLive ? live.result : undefined;
   const fingerprint = JSON.stringify({ input, plan });
@@ -181,37 +187,14 @@ export default function App() {
       setSnapshot(s => ({ ...s, screen: "plan" }));
       return;
     }
-    const requestedDemo = sameInput ? generated : generateRoutes(requested);
-    const validation = routeSource === "flyai" ? validateInput(requested) : requestedDemo.errors;
-    if (validation.length) {
-      setErrors(validation);
-      setSnapshot((s) => ({ ...s, input: requested, plan: sameInput ? s.plan : null, screen: "create" }));
-      requestAnimationFrame(() =>
-        main.current
-          ?.querySelector('[role="alert"]')
-          ?.scrollIntoView({ block: "center" }),
-      );
-      return;
-    }
+    // Open comparison immediately. Validation and route search run in a cancellable worker.
     setErrors([]);
-    if (routeSource === "flyai") {
-      const matching = live.key === tripKey(requested) && live.status === "done";
-      const first = matching ? live.result?.plans[0] : undefined;
-      setSnapshot(s => ({ ...s, input: requested, screen: target === "plan" && first ? "plan" : "compare",
-        plan: target === "plan" && first ? reconcileCityPlans(first, requested) : sameInput ? s.plan : null }));
-      return;
-    }
-    setSnapshot((s) => ({
-      ...s,
-      input: requested,
-      screen: target,
-      plan:
-        target === "plan"
-          ? reconcileCityPlans((sameInput ? s.plan : null) ?? requestedDemo.plans[0], requested)
-          : sameInput ? s.plan : null,
-    }));
+    setSnapshot(s => ({ ...s, input: requested, screen: "compare", plan: sameInput ? s.plan : null }));
   }
+
   function editInput(next: TripInput) {
+    // Applying the same dates/preferences must not discard an already edited plan.
+    if (tripKey(next) === tripKey(input)) return;
     liveController.current?.abort();
     setLive({ key: "", status: "idle" });
     setSnapshot((s) => ({ ...s, input: next, plan: null }));
@@ -245,6 +228,12 @@ export default function App() {
     }));
     setNotice(message);
   }
+  const choosePlan = useCallback((next: RoutePlan) => {
+    liveController.current?.abort();
+    setLive(previous => previous.status === "loading" ? { key: previous.key, status: "cancelled" } : previous);
+    setSnapshot(previous => ({ ...previous, plan: reconcileCityPlans(next, previous.input), screen: "plan" }));
+    setNotice("");
+  }, []);
   function persistSaved(next: SavedTrip[]) {
     if (next.length > 20) {
       setNotice(
@@ -319,7 +308,7 @@ export default function App() {
         </div>
       )}
       <OfficialEventsContext value={{ ...matchingEvents, retry: () => setEventAttempt(value => value + 1) }}>
-      <WeatherContext value={{ ...matchingWeather, applied: appliedConditions.key === conditionsKey && appliedConditions.dataKey === conditionsDataKey, retry: () => setWeatherAttempt(value => value + 1), apply: () => {
+      <WeatherContext value={{ ...matchingWeather, applied: appliedConditions.key === conditionsKey && Boolean(conditionsTask.result) && appliedConditions.dataKey === conditionsDataKey, calculating: comparing && appliedConditions.key === conditionsKey && conditionsTask.status === "loading", retry: () => setWeatherAttempt(value => value + 1), apply: () => {
         if (live.status === "loading") cancelLiveSearch();
         setAppliedConditions({ key: conditionsKey, dataKey: conditionsDataKey, events: matchingEvents.result?.events ?? [], weather: matchingWeather.result?.days ?? [] });
         setSnapshot(previous => ({ ...previous, screen: "compare", routeSource: "demo" }));
@@ -352,6 +341,9 @@ export default function App() {
             errors={routeSource === "flyai" ? [...generated.errors, ...(matchingLive && live.error ? [live.error] : liveResult?.errors ?? [])] : generated.errors}
             routeSource={routeSource}
             onRouteSource={changeRouteSource}
+            calculationStatus={localTask.status === "idle" ? "loading" : localTask.status}
+            calculationError={localTask.error}
+            onRetryCalculation={localTask.retry}
             liveStatus={matchingLive ? live.status : "idle"}
             liveProgress={matchingLive ? live.progress : undefined}
             liveResult={liveResult}
@@ -362,15 +354,7 @@ export default function App() {
             onRecover={adjustRoute}
             adjustmentNotice={routeUndo?.appliedKey === tripKey(input) ? routeUndo.message : undefined}
             onUndoAdjustment={undoRouteAdjustment}
-            onSelect={(next) => {
-              if (live.status === "loading") cancelLiveSearch();
-              setSnapshot((s) => ({
-                ...s,
-                plan: reconcileCityPlans(next, s.input),
-                screen: "plan",
-              }));
-              setNotice("");
-            }}
+            onSelect={choosePlan}
           />
         )}
         {screen === "plan" && plan && (

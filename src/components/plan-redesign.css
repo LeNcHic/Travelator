@@ -157,3 +157,13 @@
   #travelator-screens .trip-plan .tp-budget > summary { gap: 7px; flex-wrap: wrap; padding: 13px 0; min-height: 62px; font-size: 11px; }
   #travelator-screens .trip-plan .tp-budget > summary strong { font-size: 11px; }
 }
+#travelator-screens .hotel-source { display:inline-flex; flex-wrap:wrap; align-items:center; gap:6px 10px; font-size:11px; line-height:1.5; color:var(--tv-muted); }
+#travelator-screens .hotel-source-badge { display:inline-flex; align-items:center; gap:5px; border-radius:5px; padding:3px 7px; background:#eeede8; color:#626860; font-weight:600; }
+#travelator-screens .hotel-source-badge > svg { width:13px; height:13px; flex:none; }
+#travelator-screens .hotel-source-flyai .hotel-source-badge { background:#e6f0e9; color:#2b6545; }
+#travelator-screens .hotel-source-outdated .hotel-source-badge { background:#f8e9db; color:#8d512d; }
+#travelator-screens .tv-offer > .hotel-source { margin-bottom:12px; }
+#travelator-screens .trip-plan .tp-hotel-source { display:flex; align-items:baseline; flex-wrap:wrap; gap:6px 12px; padding:0 23px 15px; }
+#travelator-screens .trip-plan .tp-hotel-source > span { font-size:11px; color:var(--tv-muted); }
+#travelator-screens .trip-plan .tp-offer-copy > .hotel-source { font-size:11px; line-height:1.5; }
+@media(max-width:680px) { #travelator-screens .trip-plan .tp-hotel-source { padding:0 14px 13px; } }

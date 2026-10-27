@@ -1,3 +1,4 @@
+import { BusyIcon } from "./LoadingStatus";
 import { useEffect, useRef, useState } from "react";
 import { ExternalLink, Plane, Search } from "lucide-react";
 import { airlineLabel, airportLabel, cabinLabel, flightQuoteKey, validFlightQuote, type FlightQuery, type FlightQuote, type FlightResult } from "../../shared/flights";
@@ -27,7 +28,7 @@ export default function FlightOffers({ query, selected, preview, onSelect }: {
   }
   return <section className="tv-flyai" aria-label="Реальные авиабилеты">
     <div className="tv-flyai-intro"><span className="tv-eyebrow">АВИАБИЛЕТЫ · FLYAI / FLIGGY</span><h3>Прямые рейсы на дату переезда</h3><p>Один пассажир, экономкласс. Тариф из поиска заменит учебную цену в бюджете. Багаж, сборы, условия возврата и окончательную сумму уточняйте у поставщика.</p>
-      <button className="tv-button tv-primary" disabled={loading} onClick={search}><Search />{loading ? "Ищем рейсы…" : result || error ? "Обновить авиабилеты" : "Найти авиабилеты"}</button></div>
+      <button className="tv-button tv-primary" disabled={loading} onClick={search}>{loading ? <BusyIcon /> : <Search />}{loading ? "Ищем рейсы…" : result || error ? "Обновить авиабилеты" : "Найти авиабилеты"}</button></div>
     <div aria-live="polite" aria-busy={loading}>{error && <p className="tv-hotel-state" role="alert">{error}</p>}{result && <p className="tv-hint">Найдено рейсов: {result.offers.length}. Проверено {new Date(result.searchedAt).toLocaleString("ru-RU")}. Время местное, Китай.</p>}{result?.access === "trial" && <p>Для полных тарифов нужен личный ключ FlyAI на сервере.</p>}{result && !result.offers.length && <p className="tv-hotel-state">Подходящих рейсов не найдено. Попробуйте другую дату.</p>}</div>
     <div className="tv-offers">{result?.offers.map(({ quote, url }) => {
       const changed = preview(quote), chosen = selected && flightQuoteKey(selected) === flightQuoteKey(quote);

@@ -9,6 +9,7 @@ import "./components/route-comparison.css";
 import "./components/city-days.css";
 import "./components/simple-trip.css";
 import "./components/weather.css";
+import "./components/activity.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

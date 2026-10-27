@@ -29,3 +29,9 @@ export function monthCells(month: string): (string | null)[] {
   const count = new Date(Date.UTC(first.getUTCFullYear(), first.getUTCMonth() + 1, 0)).getUTCDate();
   return [...Array<null>(lead).fill(null), ...Array.from({ length: count }, (_, i) => `${month.slice(0, 7)}-${String(i + 1).padStart(2, "0")}`)];
 }
+/** Calendar PageUp/PageDown preserve the day when possible, clamping at month end. */
+export function shiftCalendarDate(date: string, delta: number): string {
+  const month = shiftMonth(date, delta);
+  const last = monthCells(month).at(-1)!;
+  return `${month.slice(0,7)}-${String(Math.min(Number(date.slice(8)),Number(last.slice(8)))).padStart(2,"0")}`;
+}

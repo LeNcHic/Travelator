@@ -1,0 +1,17 @@
+@keyframes tv-activity-spin { to { transform:rotate(360deg); } }
+@keyframes tv-content-enter { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
+#travelator-screens .tv-spinner { width:18px; height:18px; flex:none; animation:tv-activity-spin .85s linear infinite; }
+#travelator-screens .tv-loading-status { display:flex; align-items:center; gap:10px; font-size:13px; line-height:1.6; color:var(--tv-muted); }
+#travelator-screens .route-calculation-loading { min-height:220px; padding:35px 24px; border:1px solid var(--tv-line); border-radius:14px; background:var(--tv-surface); }
+#travelator-screens .route-calculation-loading > p:last-child { font-size:12px; color:var(--tv-muted); }
+#travelator-screens .route-calculation-error { padding:16px; border:1px solid #d6a17b; border-radius:10px; margin:16px 0; }
+#travelator-screens .simple-trip-form, #travelator-screens .trip-results, #travelator-screens .trip-plan,
+#travelator-screens .simple-calendar-month, #travelator-screens .tv-dialog[open], #travelator-screens .cp-visit,
+#travelator-screens .tp-stop-details[open] > .tp-stop-details-body,
+#travelator-screens .tp-ticket-details[open] > .tp-ticket-body,
+#travelator-screens .simple-extra[open] > .simple-extra-body,
+#travelator-screens .weather-stay[open] > div { animation:tv-content-enter .18s ease-out; }
+#travelator-screens button:active:not(:disabled) { transform:translateY(1px); }
+@media (prefers-reduced-motion:reduce) {
+  #travelator-screens *, #travelator-screens *::before, #travelator-screens *::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; }
+}

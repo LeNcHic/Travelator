@@ -2,7 +2,7 @@ import { baseCatalog, countries } from "../data/destination-catalog";
 import { CityOfficialEvents } from "./OfficialEvents";
 import { RecommendationRefresh, WeatherStay } from "./Weather";
 import { hasExactDates, internationalDays, isAutomaticTrip, tripDayOffset } from "../lib/trip-timing";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   ArrowLeft, ArrowRight, BedDouble, Bookmark, CalendarDays, Check,
   ChevronDown, Clock3, Info, MapPinned, Minus, Pin, Plane, Plus,
@@ -22,6 +22,7 @@ import { periodLabel } from "../lib/travel-calendar";
 import { planTransfer } from "../lib/plan-transfer";
 import { stopReason } from "../lib/route-reasons";
 import RouteMap from "./RouteMap";
+import HotelSource from "./HotelSource";
 
 export default function PlanScreen({ input, plan, saved, onBack, onSave, onChange, onHotel, onTicket, notice }: {
   input: TripInput;
@@ -39,8 +40,10 @@ export default function PlanScreen({ input, plan, saved, onBack, onSave, onChang
   const [mapOpen, setMapOpen] = useState(false);
   const [openStops, setOpenStops] = useState<CityId[]>([]);
   const selectedIndex = Math.min(selected, plan.cities.length - 1);
-  const rows = schedule(plan, input), stays = hotelStays(plan, input), t = totals(plan, input);
-  const reasons = new Map(isAutomaticTrip(input) ? rows.map(row => [row.city, stopReason(plan, input, row.city)] as const) : []);
+  const rows = useMemo(() => schedule(plan, input), [plan, input]);
+  const stays = useMemo(() => hotelStays(plan, input), [plan, input]);
+  const t = useMemo(() => totals(plan, input), [plan, input]);
+  const reasons = useMemo(() => new Map(isAutomaticTrip(input) ? openStops.filter(city => plan.cities.includes(city)).map(city => [city, stopReason(plan, input, city)] as const) : []), [plan, input, openStops]);
   const hasCheckedData = t.liveHotels > 0 || t.liveTrains > 0 || t.liveFlights > 0;
   const dayOffset = tripDayOffset(input), exact = hasExactDates(input);
 
@@ -127,6 +130,7 @@ export default function PlanScreen({ input, plan, saved, onBack, onSave, onChang
                   <p>{exact ? periodLabel(period) : "Даты уточним позже"}</p><small>{city.kind}{required && <Pin aria-label="Обязательная остановка" />}</small></div>
                 <div className="tp-stop-duration"><strong>{daysText(plan.days[index])}</strong><small>{row.first === row.last ? `День ${row.first + 1 + dayOffset}` : `Дни ${row.first + 1 + dayOffset}–${row.last + 1 + dayOffset}`}</small></div>
               </div>
+              {row.nights > 0 && <div className="tp-hotel-source"><span>Проживание</span><HotelSource source={hotel.outdated ? "outdated" : hotel.quote ? "flyai" : "demo"} checkedAt={hotel.quote?.searchedAt} /></div>}
               {row.arrival && <p className="tp-partial-day"><Clock3 />{row.arrival.availableMinutes > 0 ? "Первый день — переезд и свободное время после приезда" : "Первый день — переезд, заселение и отдых"}</p>}
               <details id={`tp-stop-${row.city}`} className="tp-stop-details" open={openStops.includes(row.city)} onToggle={event => {
                 const open = event.currentTarget.open;
@@ -135,7 +139,7 @@ export default function PlanScreen({ input, plan, saved, onBack, onSave, onChang
                 <summary aria-label={`Что посмотреть и где жить: ${city.name}`}><span>Что посмотреть и где жить</span><ChevronDown /></summary>
                 <div className="tp-stop-details-body">
                   <p className="tp-description">{city.description}</p>
-                  {isAutomaticTrip(input) && <div className="tp-stop-reason"><strong>Почему {city.name} · {daysText(plan.days[index])}</strong><p>{reasons.get(row.city)!.why}</p><p>{reasons.get(row.city)!.daysReason}</p><p>{reasons.get(row.city)!.load}</p>{reasons.get(row.city)!.caveat && <p>{reasons.get(row.city)!.caveat}</p>}</div>}
+                  {reasons.has(row.city) && <div className="tp-stop-reason"><strong>Почему {city.name} · {daysText(plan.days[index])}</strong><p>{reasons.get(row.city)!.why}</p><p>{reasons.get(row.city)!.daysReason}</p><p>{reasons.get(row.city)!.load}</p>{reasons.get(row.city)!.caveat && <p>{reasons.get(row.city)!.caveat}</p>}</div>}
                   {exact && <CityOfficialEvents city={row.city} start={row.date} end={row.endDate} />}
                   {exact && <WeatherStay city={row.city} start={row.date} end={row.endDate} />}
                   <ExperienceTags plan={plan} input={input} city={row.city} />
@@ -149,9 +153,10 @@ export default function PlanScreen({ input, plan, saved, onBack, onSave, onChang
                   {row.nights > 0 ? <button className="tp-offer" onClick={() => onHotel(index)} aria-label={`Выбрать гостиницу: ${city.name}`}>
                     <span className="tp-offer-icon"><BedDouble /></span><span className="tp-offer-copy"><small>ПРОЖИВАНИЕ · {nightsText(row.nights)}</small><strong>{hotel.name}</strong>
                       <span>{exact ? periodLabel({ start: hotel.checkIn, end: hotel.checkOut }) : "Даты уточним позже"} · {money(hotel.nightly)} / ночь</span>
-                      <em>{hotel.quote ? `Fliggy · поиск ${new Date(hotel.quote.searchedAt).toLocaleString("ru-RU")}` : "Тестовая гостиница"}</em>
+                      <HotelSource source={hotel.outdated ? "outdated" : hotel.quote ? "flyai" : "demo"} checkedAt={hotel.quote?.searchedAt} />
+                      {hotel.quote && <em>Предложение из поиска Fliggy · наличие и итоговая цена уточняются</em>}
                       {hotel.quote?.distanceKm !== undefined && <em>{hotel.quote.distanceKm.toLocaleString("ru-RU")} км от центра по прямой</em>}
-                      {hotel.outdated && <em className="tp-outdated">Даты изменились · обновите поиск</em>}</span><ArrowRight />
+                      </span><ArrowRight />
                   </button> : <p className="tp-description">В этой остановке ночёвка не нужна.</p>}
                   {!input.journey && !required && replacement && !plan.cities.includes(replacement) && <button className="tp-replace" onClick={() => {
                     const next = replaceCity(plan, input, index, replacement);

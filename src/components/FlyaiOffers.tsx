@@ -1,3 +1,5 @@
+import { BusyIcon } from "./LoadingStatus";
+import HotelSource from "./HotelSource";
 import { useEffect, useRef, useState } from "react";
 import { BedDouble, ExternalLink, Search, TrainFront } from "lucide-react";
 import { trainQuoteKey, validHotelQuote, validTrainQuote, type FlyaiHotelQuote, type FlyaiTrainQuote, type FlyaiQuery, type FlyaiResult } from "../../shared/flyai";
@@ -53,7 +55,7 @@ export default function FlyaiOffers({ query, onSelectHotel, routeTotal, selected
       {result?.access === "trial" && <p>Для добавления цены в бюджет нужен личный ключ FlyAI на сервере.</p>}
       {result?.limited && <p>Некоторые цены недоступны или скрыты, например «5xx». Они показаны в исходном виде.</p>}
       {query.kind === "train" && <p>Ищем прямые поезда на ближайшие 15 дней. Для более поздних поездок поиск будет доступен ближе к отправлению.</p>}
-      <button className="tv-button tv-primary" disabled={loading} onClick={search}><Search />{loading ? "Ищем предложения…" : result || error ? "Повторить поиск" : query.kind === "hotel" ? "Найти гостиницы на Fliggy" : "Найти поезда на Fliggy"}</button>
+      <button className="tv-button tv-primary" disabled={loading} onClick={search}>{loading ? <BusyIcon /> : <Search />}{loading ? "Ищем предложения…" : result || error ? "Повторить поиск" : query.kind === "hotel" ? "Найти гостиницы на Fliggy" : "Найти поезда на Fliggy"}</button>
     </div>
     <div aria-live="polite" aria-busy={loading}>
       {loading && <p className="tv-hint" role="status">Получаем предложения на даты маршрута. Обычно это занимает несколько секунд.</p>}
@@ -72,6 +74,7 @@ export default function FlyaiOffers({ query, onSelectHotel, routeTotal, selected
       const preview = train ? trainPreview?.(train) : null;
       const selectedTrain = train && selectedTrainKey === trainQuoteKey(train);
       return <article className="tv-offer" key={offer.id}>
+      {query.kind === "hotel" && <HotelSource source="flyai" checkedAt={quote?.searchedAt ?? result.searchedAt} />}
       <div className="tv-offer-top"><span className="tv-offer-symbol">{query.kind === "hotel" ? <BedDouble /> : <TrainFront />}</span><div><h3>{offer.name}</h3><p>{offer.description}</p></div></div>
       {quote && <p className="tv-hint">{quote.distanceKm === undefined ? "Расстояние до центра не уточнено." : `${quote.distanceKm.toLocaleString("ru-RU")} км от центра остановки по прямой.`}
         {quote.distanceKm !== undefined && quote.distanceKm > 25 && " Далеко от центра — в автоматический подбор не включаем."}</p>}

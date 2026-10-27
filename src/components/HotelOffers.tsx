@@ -7,6 +7,7 @@ import { money } from "../lib/format";
 import { totals, selectFlyaiHotel, selectDemoHotel } from "../lib/planner";
 import FlyaiOffers from "./FlyaiOffers";
 import { hotelsIn } from "../data/catalog";
+import HotelSource from "./HotelSource";
 
 export default function HotelOffers({ index, input, plan, onChange, onClose }: {
   index: number; input: TripInput; plan: RoutePlan;
@@ -79,6 +80,7 @@ export default function HotelOffers({ index, input, plan, onChange, onClose }: {
       const selected = Boolean(localHotel && plan.hotels[index] === localHotel.id && !plan.hotelQuotes?.[plan.cities[index]]);
       const next = localHotel ? selectDemoHotel(plan, index, localHotel.id) : plan;
       return <article className={`tv-offer ${selected ? "tv-offer-selected" : ""}`} key={offer.id}>
+        <HotelSource source="demo" />
         <div className="tv-offer-top">
           <span className="tv-offer-symbol"><BedDouble /></span>
           <div><span className="tv-stars" aria-label={`${offer.stars} звезды`}>{"★".repeat(offer.stars)}</span><h3>{offer.name}</h3><p>{offer.area}</p></div>

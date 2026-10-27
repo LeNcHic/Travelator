@@ -1,3 +1,4 @@
+import { BusyIcon } from "./LoadingStatus";
 import { createContext, useContext, useTransition } from "react";
 import { ChevronDown, CloudSun, RefreshCw } from "lucide-react";
 import { isFreshWeather, weatherKindLabel, weatherSuitability, type WeatherResult } from "../../shared/weather";
@@ -12,7 +13,7 @@ import { weatherCoverage } from "../lib/weather-search";
 import { interestNames } from "../lib/journey";
 import { RouteEventStatus, useOfficialEvents } from "./OfficialEvents";
 
-export interface WeatherState { status: "idle" | "loading" | "done" | "error"; result?: WeatherResult; error?: string; retry?: () => void; apply?: () => void; applied?: boolean }
+export interface WeatherState { status: "idle" | "loading" | "done" | "error"; result?: WeatherResult; error?: string; retry?: () => void; apply?: () => void; applied?: boolean; calculating?: boolean }
 export const WeatherContext = createContext<WeatherState>({ status: "idle" });
 export const useWeather = () => useContext(WeatherContext);
 export function RouteConditionsReason({ plan, reference, input, compact = false }: { plan: RoutePlan; reference: RoutePlan; input: TripInput; compact?: boolean }) {
@@ -33,11 +34,12 @@ export function RecommendationRefresh({ exact }: { exact: boolean }) {
   const weather = useWeather(), events = useOfficialEvents(), [pending,startTransition] = useTransition();
   if (!exact || weather.status === "idle" && events.status === "idle") return null;
   const loading = weather.status === "loading" || events.status === "loading";
+  const calculating = pending || weather.calculating;
   const usable = weather.result?.days.some(day => day.kind !== "unknown") || events.result?.events.length;
-  return <div className="conditions-update" aria-busy={pending || loading}>
-    <div className="conditions-update-heading"><CloudSun /><div><strong>{pending ? "Пересчитываем рекомендации…" : loading ? "Уточняем погоду и афишу" : weather.applied ? "Уточнение учтено в сравнении" : usable ? "Есть данные для уточнения маршрутов" : "Маршруты доступны без внешних данных"}</strong>
+  return <div className="conditions-update" aria-busy={calculating || loading}>
+    <div className="conditions-update-heading">{loading || calculating ? <BusyIcon /> : <CloudSun />}<div><strong>{calculating ? "Пересчитываем рекомендации…" : loading ? "Уточняем погоду и афишу" : weather.applied ? "Уточнение учтено в сравнении" : usable ? "Есть данные для уточнения маршрутов" : "Маршруты доступны без внешних данных"}</strong>
       <p>{loading ? "Предварительные варианты уже можно смотреть и выбирать." : "Выбранный план сохраняется. Новый вариант применится только после вашего выбора."}</p></div>
-      {!loading && usable && weather.apply && <button type="button" className="tv-button tv-secondary" disabled={pending} onClick={() => startTransition(() => weather.apply?.())}>{weather.applied ? "Обновить сравнение" : "Сравнить с учётом данных"}</button>}
+      {!loading && usable && weather.apply && <button type="button" className="tv-button tv-secondary" disabled={Boolean(calculating)} onClick={() => startTransition(() => weather.apply?.())}>{weather.applied ? "Обновить сравнение" : "Сравнить с учётом данных"}</button>}
     </div>
     <details><summary>Источники и покрытие <ChevronDown /></summary><div className="conditions-source-notes">
       <p>Для ближайших 16 календарных дней используем прогноз, дальше — сезонный ориентир по архиву трёх полных лет. Это не обещание конкретной погоды. Данные запрашиваются только для перспективных баз; покрытие каждой остановки видно в её деталях.</p>

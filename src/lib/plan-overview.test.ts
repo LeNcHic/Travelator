@@ -5,7 +5,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { hotelsIn, ticketsBetween } from "../data/catalog";
 import type { RoutePlan, TripInput } from "../types";
 import type { FlyaiTrainQuote, RailgoTrainQuote } from "../../shared/flyai";
-import { defaultInput, hotelStays, schedule, selectFlyaiTrain } from "./planner";
+import { defaultInput, hotelStays, schedule, selectFlyaiTrain, selectFlyaiHotel } from "./planner";
 import { toJourneyInput, updateJourney } from "./journey";
 import { planTransfer } from "./plan-transfer";
 import { reconcileCityPlans } from "./city-planner";
@@ -109,4 +109,31 @@ test("ticket details open the current transport: flight alternatives for air and
   assert.ok(!flightHtml.includes("Найти поезда до 2 часов"));
   assert.ok(trainHtml.includes('aria-pressed="true">RailGo'));
   assert.ok(trainHtml.includes("Найти поезда до 2 часов"));
+});
+
+test("hotel origin and the actual search timestamp are visible before opening city details", () => {
+  const stay = hotelStays(plan,input)[0];
+  const quoted = selectFlyaiHotel(plan,input,0,{source:"flyai",hotelId:"123456",city:"sha",name:"上海测试酒店",address:"",
+    checkIn:stay.checkIn,checkOut:stay.checkOut,currency:"CNY",nightly:264,priceBasis:"nightly_search_estimate",searchedAt:"2026-10-27T06:39:50Z"})!;
+  assert.ok(quoted);
+  const html = render(quoted), summary = html.slice(html.indexOf('id="tp-city-sha"'),html.indexOf('id="tp-stop-sha"'));
+  assert.ok(summary.includes('hotel-source-flyai'));
+  assert.ok(summary.includes('FlyAI / Fliggy'));
+  assert.ok(summary.includes('2026-10-27T06:39:50Z'));
+  assert.match(summary,/27\.10\.2026, 09:39 МСК/);
+  assert.ok(html.includes('上海测试酒店'),'original hotel names are preserved');
+  assert.ok(html.includes('Предложение из поиска Fliggy'));
+  assert.ok(html.includes('hotel-source-demo'),'other stops remain explicitly unverified');
+});
+
+test("a hotel quote for different stay dates cannot retain a live offer badge or search timestamp", () => {
+  const stay = hotelStays(plan,input)[0];
+  const quoted = selectFlyaiHotel(plan,input,0,{source:"flyai",hotelId:"123456",city:"sha",name:"Shanghai fixture",address:"",
+    checkIn:stay.checkIn,checkOut:stay.checkOut,currency:"CNY",nightly:264,priceBasis:"nightly_search_estimate",searchedAt:"2026-10-27T06:39:50Z"})!;
+  const html = render(quoted,{...input,startDate:"2026-11-03"});
+  assert.ok(html.includes('hotel-source-outdated'));
+  assert.ok(html.includes('Даты изменились · учтена тестовая цена'));
+  assert.ok(!html.includes('hotel-source-flyai'));
+  assert.ok(!html.includes('2026-10-27T06:39:50Z'));
+  assert.equal(hotelStays(quoted,{...input,startDate:"2026-11-03"})[0].quote,undefined);
 });

@@ -1,3 +1,4 @@
+import { BusyIcon } from "./LoadingStatus";
 import { useEffect, useRef, useState } from "react";
 import { Search, TrainFront } from "lucide-react";
 import { trainQuoteKey, validTrainQuote, type RailgoTrainQuote } from "../../shared/flyai";
@@ -33,7 +34,7 @@ export default function RailgoOffers({ query, selectedKey, preview, onSelect }: 
     <div className="tv-flyai-intro"><span className="tv-eyebrow">RAILGO · ПОЕЗДА ДО 2 ЧАСОВ</span><h3>Короткий переезд на поезде</h3>
       <p>Проверяем дни курсирования и расписание на вашу дату. Время местное, Китай. Ещё 60 минут закладываем на вокзалы.</p>
       <p>RailGo не возвращает цены и наличие мест. Сумма в бюджете — тестовый ориентир, её нужно уточнить перед покупкой. Расписание также может измениться.</p>
-      <button className="tv-button tv-primary" disabled={loading} onClick={search}><Search />{loading ? "Проверяем расписание…" : visible || error ? "Обновить расписание" : "Найти поезда до 2 часов"}</button>
+      <button className="tv-button tv-primary" disabled={loading} onClick={search}>{loading ? <BusyIcon /> : <Search />}{loading ? "Проверяем расписание…" : visible || error ? "Обновить расписание" : "Найти поезда до 2 часов"}</button>
     </div>
     <div aria-live="polite" aria-busy={loading}>
       {error && <p className="tv-hotel-state" role="alert">{error}</p>}
