@@ -23,6 +23,7 @@ import { planTransfer } from "../lib/plan-transfer";
 import { stopReason } from "../lib/route-reasons";
 import RouteMap from "./RouteMap";
 import HotelSource from "./HotelSource";
+import StopAdvice from "./TravelAdvice";
 
 export default function PlanScreen({ input, plan, saved, onBack, onSave, onChange, onHotel, onTicket, notice }: {
   input: TripInput;
@@ -138,8 +139,7 @@ export default function PlanScreen({ input, plan, saved, onBack, onSave, onChang
               }}>
                 <summary aria-label={`Что посмотреть и где жить: ${city.name}`}><span>Что посмотреть и где жить</span><ChevronDown /></summary>
                 <div className="tp-stop-details-body">
-                  <p className="tp-description">{city.description}</p>
-                  {reasons.has(row.city) && <div className="tp-stop-reason"><strong>Почему {city.name} · {daysText(plan.days[index])}</strong><p>{reasons.get(row.city)!.why}</p><p>{reasons.get(row.city)!.daysReason}</p><p>{reasons.get(row.city)!.load}</p>{reasons.get(row.city)!.caveat && <p>{reasons.get(row.city)!.caveat}</p>}</div>}
+                  {reasons.has(row.city) ? <StopAdvice reason={reasons.get(row.city)!} /> : <p className="tp-description">{city.description}</p>}
                   {exact && <CityOfficialEvents city={row.city} start={row.date} end={row.endDate} />}
                   {exact && <WeatherStay city={row.city} start={row.date} end={row.endDate} />}
                   <ExperienceTags plan={plan} input={input} city={row.city} />

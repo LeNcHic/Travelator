@@ -136,7 +136,7 @@ test("balance can choose richer nature over a slightly cheaper city while value 
   assert.equal(routeSignature(enlarged.plans.find(plan => plan.id === "balance")!), routeSignature(result.plans.find(plan => plan.id === "balance")!));
 });
 
-test("complete routes and explanations retain mandatory places, exact calendars, budget and editorial provenance", () => {
+test("complete routes and explanations retain mandatory places, exact calendars, budget and bounded interest scores", () => {
   const noop = () => {};
   for (const distribution of [{ city: 2, nature: 8, sea: 2 }, { city: 7, nature: 2, sea: 3 }, { city: 2, nature: 2, sea: 8 }]) {
     const input = updateJourney({ ...base, required: ["bei"] }, { ...base.journey!, minStops: 3, maxStops: 4,
@@ -154,7 +154,8 @@ test("complete routes and explanations retain mandatory places, exact calendars,
     }
     const html = renderToStaticMarkup(createElement(CompareScreen, { input, ...result, routeSource: "demo", liveStatus: "idle",
       onRouteSource: noop, onSearch: noop, onCancel: noop, onEdit: noop, onSelect: noop }));
-    assert.ok(html.includes("Почему подходят места") && html.includes("Редакционные оценки приложения"));
+    assert.ok(html.includes("Великая китайская стена"), "the required highlight remains visible in the recommendation");
+    assert.ok(html.includes("Карта и объяснение маршрута"));
     assert.ok(html.includes("Выбрать маршрут"));
   }
 });

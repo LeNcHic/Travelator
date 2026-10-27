@@ -10,14 +10,14 @@ import { routeSignature, totals } from "../lib/planner";
 import { routeDifference, routeExplanation, type RouteAdjustment } from "../lib/route-adjustments";
 import { usePlannerTask } from "../lib/use-planner-task";
 import LoadingStatus, { BusyIcon } from "./LoadingStatus";
-import { stayNotes } from "../lib/route-quality";
 import { routePreview } from "../lib/route-preview";
 import { periodLabel } from "../lib/travel-calendar";
 import { defaultVariant, groupRouteOptions, variantTitle, variantTradeoff, type RouteOptionGroup } from "../lib/route-options";
 import type { CityId, RoutePlan, TripInput } from "../types";
 import type { LiveRouteProgress, LiveRouteResult } from "../../shared/live-routes";
-import { alternativeTitle, routeChoiceAssessment, stopReason } from "../lib/route-reasons";
+import { alternativeTitle, routeChoiceAssessment, routeStory, stopReason } from "../lib/route-reasons";
 import RouteMap from "./RouteMap";
+import StopAdvice, { AdvicePanel } from "./TravelAdvice";
 import type { RouteRecovery } from "../lib/route-recovery";
 import RouteRecoveryOptions from "./RouteRecoveryOptions";
 
@@ -28,7 +28,7 @@ function StopExplanation({ plan, input, city, date, endDate, days }: {
   const reason = useMemo(() => open ? stopReason(plan, input, city) : null, [open, plan, input, city]);
   return <details className="route-stop-reason" onToggle={event => setOpen(event.currentTarget.open)}>
     <summary>Почему здесь {daysText(days)}?</summary>
-    {reason && <><p>{reason.why}</p><p>{reason.daysReason}</p><p>{reason.load}</p>{reason.caveat && <p>{reason.caveat}</p>}{hasExactDates(input) && <WeatherStay city={city} start={date} end={endDate} />}</>}
+    {reason && <><StopAdvice reason={reason} compact />{hasExactDates(input) && <WeatherStay city={city} start={date} end={endDate} />}</>}
   </details>;
 }
 
@@ -43,6 +43,7 @@ const RouteOption = memo(function RouteOption({ group, input, recommended, refer
   const explanation = useMemo(() => routeExplanation(plan, input), [plan, input]);
   const rows = useMemo(() => routePreview(plan, input), [plan, input]);
   const assessment = useMemo(() => routeChoiceAssessment(plan, input, alternatives), [plan, input, alternatives]);
+  const story = useMemo(() => detailsOpen ? routeStory(plan, input) : null, [detailsOpen, plan, input]);
   const photo = plan.cities.find(city => cities[city].interest === "nature") ?? plan.cities[0];
   const title = recommended ? "Рекомендуемый маршрут" : isAutomaticTrip(input) ? alternativeTitle(reference, plan, input) : variantTitle(preferred);
   return <article className={`route-option ${recommended ? "route-option-recommended" : ""}`} aria-label={`Вариант маршрута: ${title}`}>
@@ -80,9 +81,12 @@ const RouteOption = memo(function RouteOption({ group, input, recommended, refer
       <details className="route-option-details" onToggle={event => setDetailsOpen(event.currentTarget.open)}><summary><MapPin />Карта и объяснение маршрута <ChevronDown /></summary>
         <RouteConditionsReason plan={plan} reference={reference} input={input} />
         {detailsOpen && <RouteMap ids={plan.cities} plan={plan} mini modes={rows.flatMap(row => row.ticket ? [row.ticket.mode] : [])} />}
-        <p>{isAutomaticTrip(input) ? "Это отдельная идея поездки с другим набором городов. Сначала соблюдаем срок, бюджет и обязательные места, затем сравниваем стоимость, дорогу и соответствие интересам; среди близких вариантов учитываем различие мест." : explanation.rationale}</p>
-        {input.journey && <div className="route-fit-explanation"><strong>Почему подходят места</strong><p>Учитываем ваши интересы, срок, темп и разнообразие мест. Оценка этого маршрута — {Math.round(explanation.fit.total)} из 100 по модели подбора.</p><ul>{explanation.fit.locations.map(location => <li key={location.city}><b>{cities[location.city].name}</b> — {location.reason}.</li>)}</ul><small>Редакционные оценки приложения, не отзывы туристов. Обязательные места сохраняются независимо от оценки.</small></div>}
-        <p>{explanation.order}</p><p>{explanation.calendar}.</p>{[...stayNotes(plan, input), ...explanation.seasonalNotes].map(note => <p key={note}>{note}</p>)}<p>{isAutomaticTrip(input) ? "Все дни распределены между остановками. Время переездов показано справочно и не вычитается из срока." : "Дни включают приезд. Время на прогулки в день переезда показано в подробном плане."}</p></details>
+        {story && <AdvicePanel title="Как мы собрали вашу поездку">
+          <p>{story.overview}</p>{story.personal && <p>{story.personal}</p>}
+          <p>{story.transport}</p>{story.caveat && <p className="trip-advice-note">{story.caveat}</p>}
+        </AdvicePanel>}
+        {explanation.seasonalNotes.map(note => <p key={note}>{note}</p>)}
+        <p>{isAutomaticTrip(input) ? "Все дни остаются в вашем распоряжении. Время переездов показано отдельно и не вычитается из срока поездки." : explanation.calendar + "."}</p></details>
     </div>
   </article>;
 });

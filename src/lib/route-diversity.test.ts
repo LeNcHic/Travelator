@@ -6,7 +6,7 @@ import { automaticPreferences } from "./automatic-preferences";
 import { defaultInput, generateRoutes, totals, rankRoutePlans, schedule } from "./planner";
 import { isPlan } from "./storage";
 import { destinationSetKey } from "./route-diversity";
-import { alternativeTitle, routeChoiceAssessment, stopReason } from "./route-reasons";
+import { alternativeTitle, routeChoiceAssessment, routeStory, stopReason } from "./route-reasons";
 import { experienceAllocation } from "./journey";
 import { dayMinutes } from "./city-planner";
 import { hotelsIn, ticketsBetween } from "../data/catalog";
@@ -56,8 +56,88 @@ test("each stay explanation reflects actual days, mandatory places, manual visit
   const reason = stopReason(edited, preferences, "bei");
   assert.equal(reason.days, 10); assert.equal(reason.freeDays, 9); assert.equal(reason.count, 1);
   assert.equal(reason.minutes, dayMinutes(["bei-wall"]));
-  assert.match(reason.why, /Великая китайская стена/); assert.match(reason.daysReason, /дольше обычного ориентира/);
-  assert.match(reason.caveat, /9 дней без назначенных посещений/); assert.deepEqual(edited, before);
+  assert.match(reason.why, /Великая китайская стена/); assert.match(reason.daysReason, /больше обычного ориентира/);
+  assert.match(reason.caveat, /9 дней остаются без назначенных посещений/); assert.deepEqual(edited, before);
+});
+
+test("personal recommendations follow actual visits and flag overload rather than promising a comfortable schedule", () => {
+  const preferences = automaticPreferences(input(5), { interests: ["city"], required: ["bei"] });
+  preferences.journey = { ...preferences.journey!, minStops: 1, maxStops: 1 };
+  const original = generateRoutes(preferences).plans[0];
+  const empty = { ...original, visits: { bei: Array.from({length:5}, () => [] as string[]) } };
+  const before = structuredClone(empty), initial = stopReason(empty, preferences, "bei");
+  assert.equal(initial.count,0); assert.deepEqual(initial.highlights,[]);
+  assert.ok(!initial.why.includes("В программе —"));
+  assert.match(initial.load,/Места пока не добавлены/);
+  const edited = { ...empty, visits: { bei: [["bei-wall","bei-palace","bei-heaven"],[],[],[],[]] } };
+  const reason = stopReason(edited, preferences,"bei");
+  assert.equal(reason.count,3); assert.equal(reason.freeDays,4); assert.equal(reason.overloadedDays,1);
+  assert.match(reason.why,/Великая китайская стена/); assert.match(reason.caveat,/плотнее выбранного темпа/);
+  assert.match(reason.daysReason,/посещения сейчас занимают только 1 день/);
+  assert.deepEqual(empty,before,"writing advice never modifies a stored plan");
+});
+
+test("route narratives describe actual transport, compulsory stops and the chosen sea ending", () => {
+  const preferences = automaticPreferences(input(7), { interests: ["city","nature"], required: ["sha","han"] });
+  const plan: RoutePlan = { id:"balance",calendarMode:"shared",cities:["sha","han"],days:[3,4],hotels:[hotelsIn("sha")[0].id,hotelsIn("han")[0].id],tickets:[ticketsBetween("sha","han").find(ticket=>ticket.mode==="train")!.id] };
+  const before=structuredClone(plan), story=routeStory(plan,preferences);
+  assert.match(story.overview,/«Шанхай»/); assert.match(story.overview,/«Ханчжоу»/);
+  assert.match(story.personal,/Обязательные города/);
+  assert.match(story.transport,/предлагаем поезда/);
+  assert.ok(!story.transport.includes("перелёты")); assert.ok(!story.transport.includes("аэропорты"));
+  assert.match(story.transport,/ориентировочная/); assert.deepEqual(plan,before);
+  const seaInput={...automaticPreferences(input(10),{interests:["nature","sea"],required:["gui","san"]}),seaEnd:true};
+  seaInput.journey={...seaInput.journey!,minStops:2,maxStops:2};
+  const seaPlan=generateRoutes(seaInput).plans[0]; assert.ok(seaPlan);
+  const sea=stopReason(seaPlan,seaInput,"san");
+  assert.match(sea.connection,/Завершаем путешествие у моря/);
+  assert.match(routeStory(seaPlan,seaInput).personal,/Морской отдых оставили на финал/);
+  const single={...plan,cities:["sha"] as CityId[],days:[7],tickets:[],hotels:[plan.hotels[0]]};
+  assert.match(routeStory(single,preferences).transport,/из одной базы/);
+});
+
+test("coastal advice distinguishes a city-and-island stay from a beach stay without inventing visits", () => {
+  const preferences = automaticPreferences(input(5), { interests: ["sea"] });
+  const single = (city: CityId): RoutePlan => ({ id: "balance", calendarMode: "shared", cities: [city], days: [5], tickets: [], hotels: [hotelsIn(city)[0].id], visits: { [city]: Array.from({length: 5}, () => [] as string[]) } });
+  const xiamen = stopReason(single("xmn"), preferences, "xmn"), sanya = stopReason(single("san"), preferences, "san");
+  assert.match(xiamen.why, /старые улицы и остров Гуланъюй/);
+  assert.match(sanya.why, /пляжи и свободное время/);
+  for (const reason of [xiamen, sanya]) {
+    assert.match(reason.daysReason, /места пока не добавлены/);
+    assert.equal(reason.practical, "", "a destination highlight alone does not imply a booked or planned visit");
+    assert.ok(!reason.why.includes("В текущем плане"));
+  }
+});
+
+test("practical advice and concrete overload suggestions follow manual programme edits", () => {
+  const preferences = automaticPreferences(input(5), { interests: ["city", "sea"] });
+  const base: RoutePlan = { id: "balance", calendarMode: "shared", cities: ["xmn"], days: [5], tickets: [], hotels: [hotelsIn("xmn")[0].id], visits: { xmn: [["xmn-gulangyu", "xmn-huandao"], [], [], [], []] } };
+  const overloaded = stopReason(base, preferences, "xmn");
+  assert.match(overloaded.practical, /паром/);
+  assert.match(overloaded.caveat, /В 1-й день остановки заложено/);
+  assert.match(overloaded.caveat, /перенести на свободный 2-й день/);
+  const spread = {...base, visits: {xmn: [["xmn-gulangyu"], ["xmn-huandao"], [], [], []]}};
+  assert.equal(stopReason(spread, preferences, "xmn").overloadedDays, 0);
+  const withoutIsland = {...base, visits: {xmn: [["xmn-huandao"], [], [], [], []]}};
+  assert.equal(stopReason(withoutIsland, preferences, "xmn").practical, "");
+  assert.match(stopReason(withoutIsland, preferences, "xmn").load, /4 дня остаются без назначенных посещений/);
+});
+
+test("a short-train connection is explained only when the chosen leg really qualifies", () => {
+  const preferences = automaticPreferences(input(7), { interests: ["city", "nature"] });
+  const plan: RoutePlan = {id:"balance", calendarMode:"shared", cities:["sha", "han"], days:[3,4], hotels:[hotelsIn("sha")[0].id,hotelsIn("han")[0].id], tickets:[ticketsBetween("sha", "han").find(ticket => ticket.mode === "train")!.id]};
+  assert.match(stopReason(plan, preferences, "han").connection, /1 ч 5 мин на поезде/);
+  const longer: RoutePlan = {...plan, cities:["sha", "bei"], hotels:[plan.hotels[0],hotelsIn("bei")[0].id], tickets:[ticketsBetween("sha", "bei").find(ticket => ticket.mode === "train")!.id]};
+  assert.ok(!stopReason(longer, preferences, "bei").connection.includes("без длинного переезда"));
+});
+
+test("coastal advice uses the actual stay season and does not assume dates for a flexible trip", () => {
+  const preferences = automaticPreferences({...input(5), startDate: "2027-01-12"}, {interests: ["sea"]});
+  preferences.journey = {...preferences.journey!, flexibleDates: false};
+  const plan: RoutePlan = {id: "balance", calendarMode:"shared", cities:["xmn"], days:[5], hotels:[hotelsIn("xmn")[0].id], tickets: []};
+  assert.match(stopReason(plan, preferences, "xmn").caveat, /купание не предполагаем/);
+  const flexible = {...preferences, journey:{...preferences.journey!, flexibleDates:true}};
+  assert.ok(!stopReason(plan, flexible, "xmn").caveat.includes("купание не предполагаем"));
 });
 
 test("alternative titles never claim savings or less road time without the corresponding fact", () => {
@@ -122,9 +202,9 @@ test("choice assessments justify the current option with measured trade-offs amo
     const assessment = routeChoiceAssessment(plan, preferences, plans), values = totals(plan, preferences);
     assert.equal(assessment.costAboveMinimum, Math.round((values.total - minimum) * 100) / 100);
     assert.equal(assessment.minutesAboveFastest, values.minutes - fastest);
-    if (assessment.strength.includes("Самая низкая стоимость")) assert.equal(values.total, minimum);
-    if (assessment.strength.includes("Меньше всего времени")) assert.equal(values.minutes, fastest);
-    if (assessment.strength.includes("соответствие интересам")) assert.ok(assessment.fitGap < .01);
+    if (assessment.strength.includes("самых доступных")) assert.equal(values.total, minimum);
+    if (assessment.strength.includes("меньше всего времени")) assert.equal(values.minutes, fastest);
+    if (assessment.strength.includes("ближе всего к вашим интересам")) assert.ok(assessment.fitGap < .01);
     assert.ok(!assessment.strength.includes("оптимальный"));
   }
 });

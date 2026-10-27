@@ -120,6 +120,13 @@
 #travelator-screens .tp-stop-reason { padding: 16px; background: var(--tv-bg); border: 1px solid var(--tv-line); border-radius: 10px; margin: 16px 0; }
 #travelator-screens .tp-stop-reason strong { font-size: 13px; }
 #travelator-screens .tp-stop-reason p { font-size: 12px; line-height: 1.8; color: var(--tv-muted); margin: 9px 0 0; }
+#travelator-screens .trip-advice-heading { display:flex; align-items:center; gap:7px; color:var(--tv-ink); }
+#travelator-screens .trip-advice-heading > svg { width:16px; height:16px; flex:none; color:var(--tv-primary); }
+#travelator-screens .trip-advice-compact { padding:10px 0 0; }
+#travelator-screens .trip-advice-compact .trip-advice-heading > strong { font-size:12px; }
+#travelator-screens .trip-advice .trip-advice-note { padding-left:10px; border-left:2px solid var(--tv-line); }
+#travelator-screens .trip-advice-programme { margin-top:12px; }
+#travelator-screens .trip-advice-programme > summary { cursor:pointer; font-size:11px; color:var(--tv-primary); }
 
 #travelator-screens .route-event-status { border: 1px solid var(--tv-line); border-radius: 10px; margin: 15px 0 22px; padding: 0 16px; background: var(--tv-surface); }
 #travelator-screens .route-event-status summary, #travelator-screens .city-official-events summary { display: flex; align-items: center; gap: 9px; min-height: 48px; font-size: 12px; cursor: pointer; list-style: none; }
