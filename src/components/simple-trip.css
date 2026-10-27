@@ -1,0 +1,115 @@
+#travelator-screens .simple-trip-form { max-width: 960px; margin: 0 auto; padding: 45px 32px 25px; }
+#travelator-screens .simple-trip-heading { max-width: 720px; margin-bottom: 27px; }
+#travelator-screens .simple-eyebrow { font-size: 10px; font-weight: 650; letter-spacing: 1.5px; color: var(--tv-primary); margin: 0 0 15px; }
+#travelator-screens .simple-trip-heading h1 { font-size: clamp(29px, 3.5vw, 43px); letter-spacing: -1.4px; font-weight: 600; line-height: 1.2; margin: 0 0 14px; }
+#travelator-screens .simple-trip-heading > p:last-child { color: var(--tv-muted); font-size: 14px; line-height: 1.8; margin: 0; }
+#travelator-screens .simple-trip-form > form { background: var(--tv-surface); border: 1px solid var(--tv-line); border-radius: 19px; padding: 30px; }
+#travelator-screens .simple-trip-form fieldset { min-width: 0; border: 0; padding: 0; margin: 0; }
+#travelator-screens .simple-trip-form legend, #travelator-screens .simple-field > label { font-size: 14px; font-weight: 600; padding: 0; margin-bottom: 13px; color: var(--tv-ink); display: block; }
+#travelator-screens .simple-trip-basics { display: grid; grid-template-columns: minmax(150px,.75fr) minmax(0,1.7fr); gap: 28px; margin-bottom: 27px; }
+#travelator-screens .simple-trip-form input, #travelator-screens .simple-trip-form select { color: var(--tv-ink); font: inherit; font-size: 13px; min-height: 43px; border: 1px solid var(--tv-line); background: var(--tv-bg); border-radius: 8px; padding: 10px 12px; min-width: 0; }
+#travelator-screens .simple-field select { width: 100%; }
+#travelator-screens .simple-field > small { display: block; color: var(--tv-muted); font-size: 10px; margin-top: 8px; }
+#travelator-screens .simple-duration-options { display: flex; gap: 6px; flex-wrap: wrap; }
+#travelator-screens .simple-duration-options button { font-size: 11px; min-height: 43px; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--tv-line); background: white; color: var(--tv-muted); cursor: pointer; }
+#travelator-screens .simple-duration-options button[aria-pressed="true"] { color: var(--tv-primary); border-color: var(--tv-primary); background: var(--tv-soft); }
+#travelator-screens .simple-dates-toggle { display: flex; align-items: center; gap: 7px; min-height: 34px; border: 0; padding: 6px 0 0; margin-top: 4px; color: var(--tv-muted); background: none; font-size: 11px; cursor: pointer; text-align: left; }
+#travelator-screens .simple-dates-toggle svg { width: 13px; height: 13px; flex-shrink: 0; }
+#travelator-screens .simple-dates-toggle svg:last-child { color: var(--tv-primary); width: 12px; }
+#travelator-screens .simple-custom-days { display: flex; align-items: center; gap: 10px; margin-top: 10px; color: var(--tv-muted); font-size: 11px; }
+#travelator-screens .simple-custom-days > input { width: 72px; min-height: 38px; padding: 7px 10px; }
+#travelator-screens .simple-custom-days > span { font-size: 10px; }
+#travelator-screens .simple-trip-form .simple-interests { margin-bottom: 27px; }
+#travelator-screens .simple-interests legend { margin-bottom: 6px; }
+#travelator-screens .simple-interests > p { margin: 0 0 14px; color: var(--tv-muted); font-size: 11px; line-height: 1.7; }
+#travelator-screens .simple-interests > div { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }
+#travelator-screens .simple-interests button { display: flex; align-items: center; gap: 9px; padding: 14px 12px; text-align: left; border: 1px solid var(--tv-line); border-radius: 9px; background: white; color: var(--tv-muted); font-size: 12px; line-height: 1.6; min-height: 65px; cursor: pointer; }
+#travelator-screens .simple-interests button > svg { width: 18px; height: 18px; flex-shrink: 0; stroke-width: 1.5; }
+#travelator-screens .simple-interests button[aria-pressed="true"] { border-color: var(--tv-primary); background: var(--tv-softest); color: var(--tv-ink); }
+#travelator-screens .simple-interests button[aria-pressed="true"] > svg { color: var(--tv-primary); }
+#travelator-screens .simple-choice-mark { display: grid; place-items: center; width: 16px; height: 16px; flex-shrink: 0; border: 1px solid var(--tv-line); border-radius: 4px; margin-left: auto; }
+#travelator-screens .simple-choice-mark svg { width: 11px; height: 11px; }
+#travelator-screens .simple-interests button[aria-pressed="true"] .simple-choice-mark { border-color: var(--tv-primary); background: var(--tv-primary); color: white; }
+#travelator-screens .simple-paces > div { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }
+#travelator-screens .simple-paces button { text-align: left; border: 1px solid var(--tv-line); background: white; border-radius: 9px; padding: 13px 15px; color: var(--tv-muted); min-height: 65px; cursor: pointer; }
+#travelator-screens .simple-paces strong { display: block; font-size: 12px; font-weight: 550; }
+#travelator-screens .simple-paces small { display: block; font-size: 10px; margin-top: 5px; line-height: 1.6; }
+#travelator-screens .simple-paces button[aria-pressed="true"] { border-color: var(--tv-ink); background: var(--tv-ink); color: white; }
+#travelator-screens .simple-extra { margin-top: 26px; border-top: 1px solid var(--tv-line); }
+#travelator-screens .simple-extra > summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 53px; padding: 10px 0; list-style: none; color: var(--tv-muted); font-size: 12px; cursor: pointer; }
+#travelator-screens .simple-extra > summary::-webkit-details-marker { display: none; }
+#travelator-screens .simple-extra > summary > svg { width: 14px; height: 14px; }
+#travelator-screens .simple-extra[open] > summary > svg { transform: rotate(180deg); }
+#travelator-screens .simple-extra > summary small { font-size: 10px; }
+#travelator-screens .simple-extra-body { padding: 4px 0 22px; }
+#travelator-screens .simple-extra-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+#travelator-screens .simple-extra-fields label { color: var(--tv-muted); font-size: 11px; line-height: 1.6; }
+#travelator-screens .simple-extra-fields input, #travelator-screens .simple-extra-fields select { display: block; width: 100%; margin-top: 7px; }
+#travelator-screens .simple-extra-fields small { display: block; font-size: 10px; margin-top: 6px; }
+#travelator-screens .simple-place-label { font-size: 12px; font-weight: 550; margin: 22px 0 12px; }
+#travelator-screens .simple-required-places { display: flex; flex-wrap: wrap; gap: 7px; }
+#travelator-screens .simple-required-places button { display: flex; align-items: center; gap: 8px; min-height: 35px; background: var(--tv-soft); color: var(--tv-primary); border: 1px solid var(--tv-line); padding: 7px 10px; margin-bottom: 10px; border-radius: 7px; font-size: 11px; cursor: pointer; }
+#travelator-screens .simple-required-places svg { width: 12px; height: 12px; }
+#travelator-screens .simple-place-search { display: flex; gap: 8px; align-items: center; background: var(--tv-bg); padding: 0 10px; border: 1px solid var(--tv-line); border-radius: 8px; }
+#travelator-screens .simple-place-search svg { width: 16px; height: 16px; color: var(--tv-muted); flex-shrink: 0; }
+#travelator-screens .simple-place-search input { border: 0; padding-left: 0; flex: 1; }
+#travelator-screens .simple-place-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 5px 15px; margin-top: 8px; }
+#travelator-screens .simple-place-choices button { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 3px; border: 0; border-bottom: 1px solid var(--tv-line); background: none; color: var(--tv-ink); text-align: left; cursor: pointer; font-size: 12px; }
+#travelator-screens .simple-place-choices small { display: block; color: var(--tv-muted); font-size: 10px; margin-top: 3px; }
+#travelator-screens .simple-place-choices svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--tv-primary); }
+#travelator-screens .simple-extra-hint { color: var(--tv-muted); font-size: 12px; margin: 15px 0 0; }
+#travelator-screens .simple-trip-submit { display: flex; justify-content: space-between; gap: 20px; align-items: center; border-top: 1px solid var(--tv-line); padding-top: 22px; }
+#travelator-screens .simple-trip-submit > p { font-size: 11px; color: var(--tv-muted); line-height: 1.7; margin: 0; }
+#travelator-screens .simple-trip-submit .tv-button { flex-shrink: 0; }
+#travelator-screens .simple-trip-footnote { margin: 17px auto 0; max-width: 700px; text-align: center; font-size: 11px; line-height: 1.8; color: var(--tv-muted); }
+#travelator-screens .simple-resume { display: flex; align-items: center; justify-content: space-between; gap: 15px; font-size: 12px; color: var(--tv-muted); background: var(--tv-soft); border: 1px solid var(--tv-line); border-radius: 10px; margin-bottom: 16px; padding: 11px 15px; }
+#travelator-screens .simple-resume button { display: flex; align-items: center; gap: 7px; border: 0; background: none; color: var(--tv-primary); font-size: 12px; min-height: 32px; cursor: pointer; }
+#travelator-screens .simple-resume svg { width: 14px; height: 14px; }
+#travelator-screens .simple-form-error { font-size: 12px; line-height: 1.8; color: #92522d; background: #faeddf; border-radius: 9px; padding: 11px 14px; margin: 12px 0; }
+#travelator-screens .simple-form-error p { margin: 0 0 5px; }
+#travelator-screens .simple-dates-dialog { width: min(740px, calc(100vw - 32px)); }
+#travelator-screens .simple-range-inputs { display: flex; gap: 10px; align-items: center; }
+#travelator-screens .simple-range-inputs > label { flex: 1; min-width: 0; color: var(--tv-muted); font-size: 11px; }
+#travelator-screens .simple-range-inputs input { display: block; width: 100%; margin-top: 6px; min-height: 43px; padding: 10px 12px; border: 1px solid var(--tv-line); background: white; border-radius: 8px; color: var(--tv-ink); font: inherit; font-size: 13px; }
+#travelator-screens .simple-range-inputs > span { color: var(--tv-muted); padding-top: 15px; }
+#travelator-screens .simple-calendar-nav { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin: 20px 0 6px; }
+#travelator-screens .simple-calendar-nav button { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--tv-line); border-radius: 8px; background: white; color: var(--tv-ink); cursor: pointer; }
+#travelator-screens .simple-calendar-nav svg { width: 16px; height: 16px; }
+#travelator-screens .simple-calendar-nav span { color: var(--tv-muted); font-size: 11px; }
+#travelator-screens .simple-calendars { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+#travelator-screens .simple-calendar-month h3 { font-size: 14px; font-weight: 600; text-align: center; margin: 8px 0 18px; text-transform: capitalize; }
+#travelator-screens .simple-weekdays, #travelator-screens .simple-date-grid { display: grid; grid-template-columns: repeat(7,minmax(0,1fr)); gap: 3px; }
+#travelator-screens .simple-weekdays { color: var(--tv-muted); font-size: 10px; text-align: center; margin-bottom: 7px; }
+#travelator-screens .simple-date-grid button { display: grid; place-items: center; aspect-ratio: 1; width: 100%; min-height: 32px; border: 0; border-radius: 6px; background: none; color: var(--tv-ink); font-size: 12px; cursor: pointer; }
+#travelator-screens .simple-date-grid button:hover:not(:disabled) { background: var(--tv-soft); }
+#travelator-screens .simple-date-grid button:disabled { color: #bcc1bb; cursor: default; }
+#travelator-screens .simple-date-grid button.in-range { background: var(--tv-soft); border-radius: 3px; }
+#travelator-screens .simple-date-grid button.is-endpoint { background: var(--tv-primary); color: white; }
+#travelator-screens .simple-date-grid button[aria-current="date"]:not(.is-endpoint) { box-shadow: inset 0 0 0 1px var(--tv-primary); }
+#travelator-screens .simple-range-result { display: flex; flex-wrap: wrap; gap: 8px 15px; justify-content: space-between; align-items: center; min-height: 48px; border-top: 1px solid var(--tv-line); margin-top: 20px; padding: 13px 0; font-size: 12px; line-height: 1.7; color: var(--tv-muted); }
+#travelator-screens .simple-range-result strong { color: var(--tv-ink); font-weight: 550; }
+#travelator-screens .simple-date-actions { display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+#travelator-screens .simple-date-actions > button:first-child { border: 0; background: none; color: var(--tv-muted); min-height: 44px; padding: 7px 0; font-size: 12px; cursor: pointer; }
+@media (max-width: 650px) {
+  #travelator-screens .simple-trip-form { padding: 28px 16px 15px; }
+  #travelator-screens .simple-trip-heading h1 { font-size: 31px; letter-spacing: -1px; }
+  #travelator-screens .simple-trip-heading > p:last-child { font-size: 13px; }
+  #travelator-screens .simple-trip-form > form { padding: 22px 18px; border-radius: 14px; }
+  #travelator-screens .simple-trip-basics { grid-template-columns: 1fr; gap: 23px; margin-bottom: 23px; }
+  #travelator-screens .simple-interests > div { grid-template-columns: 1fr; }
+  #travelator-screens .simple-interests button { min-height: 48px; padding: 12px; }
+  #travelator-screens .simple-paces > div { gap: 5px; }
+  #travelator-screens .simple-paces button { padding: 11px 8px; min-height: 65px; }
+  #travelator-screens .simple-paces strong { font-size: 11px; }
+  #travelator-screens .simple-paces small { font-size: 9px; }
+  #travelator-screens .simple-extra-fields, #travelator-screens .simple-place-choices { grid-template-columns: 1fr; }
+  #travelator-screens .simple-trip-submit { flex-direction: column; align-items: stretch; gap: 14px; }
+  #travelator-screens .simple-trip-submit > p { font-size: 10px; }
+  #travelator-screens .simple-trip-submit .tv-button { width: 100%; }
+  #travelator-screens .simple-resume { flex-wrap: wrap; gap: 4px; }
+  #travelator-screens .simple-duration-options button { font-size: 10px; padding: 8px 9px; }
+  #travelator-screens .simple-calendars { grid-template-columns: 1fr; }
+  #travelator-screens .simple-dates-dialog .tv-dialog-content { padding: 20px; }
+  #travelator-screens .simple-date-grid button { min-height: 35px; }
+  #travelator-screens .simple-date-actions .tv-button { font-size: 11px; padding: 12px; }
+}

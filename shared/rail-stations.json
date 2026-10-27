@@ -1,0 +1,212 @@
+{
+  "source": "https://kyfw.12306.cn/otn/resources/js/framework/station_name.js",
+  "checkedAt": "2026-10-27",
+  "records": {
+    "suz": {
+      "code": "SZH",
+      "stations": [
+        "苏州北",
+        "苏州",
+        "苏州南"
+      ]
+    },
+    "nan": {
+      "code": "NJH",
+      "stations": [
+        "南京",
+        "南京南"
+      ]
+    },
+    "wux": {
+      "code": "WXH",
+      "stations": [
+        "无锡东",
+        "无锡"
+      ]
+    },
+    "nin": {
+      "code": "NGH",
+      "stations": [
+        "宁波东",
+        "宁波"
+      ]
+    },
+    "shx": {
+      "code": "SOH",
+      "stations": [
+        "绍兴北",
+        "绍兴东",
+        "绍兴"
+      ]
+    },
+    "fuz": {
+      "code": "FZS",
+      "stations": [
+        "福州",
+        "福州南"
+      ]
+    },
+    "qua": {
+      "code": "QYS",
+      "stations": [
+        "泉州",
+        "泉州东",
+        "泉州南"
+      ]
+    },
+    "gua": {
+      "code": "GZQ",
+      "stations": [
+        "广州北",
+        "广州东",
+        "广州",
+        "广州南",
+        "广州西"
+      ]
+    },
+    "she": {
+      "code": "SZQ",
+      "stations": [
+        "深圳北",
+        "深圳东",
+        "深圳",
+        "深圳西"
+      ]
+    },
+    "zhu": {
+      "code": "ZHQ",
+      "stations": [
+        "珠海",
+        "珠海北"
+      ]
+    },
+    "hai": {
+      "code": "VUQ",
+      "stations": [
+        "海口东",
+        "海口"
+      ]
+    },
+    "dal": {
+      "code": "DLT",
+      "stations": [
+        "大连北",
+        "大连",
+        "大连西"
+      ]
+    },
+    "qhd": {
+      "code": "QTP",
+      "stations": [
+        "秦皇岛"
+      ]
+    },
+    "yan": {
+      "code": "YAK",
+      "stations": [
+        "烟台",
+        "烟台南",
+        "烟台西"
+      ]
+    },
+    "wei": {
+      "code": "WKK",
+      "stations": [
+        "威海",
+        "威海北"
+      ]
+    },
+    "luo": {
+      "code": "LYF",
+      "stations": [
+        "洛阳",
+        "洛阳东"
+      ]
+    },
+    "dat": {
+      "code": "DTV",
+      "stations": [
+        "大同南",
+        "大同"
+      ]
+    },
+    "pin": {
+      "code": "PYV",
+      "stations": [
+        "平遥古城",
+        "平遥"
+      ]
+    },
+    "kun": {
+      "code": "KMM",
+      "stations": [
+        "昆明",
+        "昆明南"
+      ]
+    },
+    "dli": {
+      "code": "DKM",
+      "stations": [
+        "大理"
+      ]
+    },
+    "lij": {
+      "code": "LHM",
+      "stations": [
+        "丽江"
+      ]
+    },
+    "shr": {
+      "code": "EUM",
+      "stations": [
+        "香格里拉"
+      ]
+    },
+    "cho": {
+      "code": "CQW",
+      "stations": [
+        "重庆北",
+        "重庆东",
+        "重庆",
+        "重庆南",
+        "重庆西"
+      ]
+    },
+    "guy": {
+      "code": "GIW",
+      "stations": [
+        "贵阳",
+        "贵阳北",
+        "贵阳东"
+      ]
+    },
+    "ans": {
+      "code": "ASW",
+      "stations": [
+        "安顺",
+        "安顺西"
+      ]
+    },
+    "les": {
+      "code": "IVW",
+      "stations": [
+        "乐山"
+      ]
+    },
+    "wuy": {
+      "code": "WAS",
+      "stations": [
+        "武夷山北",
+        "武夷山"
+      ]
+    },
+    "jin": {
+      "code": "JNK",
+      "stations": [
+        "济南",
+        "济南东",
+        "济南西"
+      ]
+    }
+  }
+}

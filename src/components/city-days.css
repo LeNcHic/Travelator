@@ -1,0 +1,129 @@
+#travelator-screens .city-day-planner { max-width: 900px; margin: 0 auto; }
+#travelator-screens .city-day-planner .cp-back { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; border: 0; background: none; color: var(--tv-muted); font-size: 12px; padding: 0; cursor: pointer; }
+#travelator-screens .city-day-planner .cp-back svg { width: 15px; height: 15px; }
+#travelator-screens .cp-heading { margin: 18px 0 21px; }
+#travelator-screens .cp-heading > p { color: var(--tv-primary); font-size: 10px; font-weight: 650; letter-spacing: 1.5px; margin: 0 0 8px; }
+#travelator-screens .cp-heading h2 { font-size: 32px; font-weight: 600; letter-spacing: -.8px; line-height: 1.2; margin: 0 0 10px; scroll-margin-top: 28px; }
+#travelator-screens .cp-heading > span { color: var(--tv-muted); font-size: 13px; line-height: 1.7; }
+#travelator-screens .cp-cities { display: flex; flex-wrap: wrap; gap: 7px; padding-bottom: 24px; }
+#travelator-screens .cp-cities button { border: 1px solid var(--tv-line); background: var(--tv-surface); color: var(--tv-muted); border-radius: 24px; padding: 9px 16px; min-height: 40px; cursor: pointer; font-size: 12px; }
+#travelator-screens .cp-cities button[aria-pressed="true"] { background: var(--tv-ink); color: white; border-color: var(--tv-ink); }
+#travelator-screens .cp-day-nav { display: flex; gap: 8px; overflow-x: auto; padding: 3px 3px 13px; margin: 0 -3px 20px; scrollbar-width: thin; }
+#travelator-screens .cp-day-nav button { flex: 1 0 133px; max-width: 180px; text-align: left; border: 1px solid var(--tv-line); border-radius: 10px; background: var(--tv-surface); padding: 13px 14px; cursor: pointer; color: var(--tv-ink); }
+#travelator-screens .cp-day-nav button[aria-selected="true"] { border-color: var(--tv-primary); background: var(--tv-soft); box-shadow: inset 0 0 0 1px var(--tv-primary); }
+#travelator-screens .cp-day-nav strong { display: grid; gap: 5px; font-size: 13px; font-weight: 600; }
+#travelator-screens .cp-day-nav strong > span { font-size: 11px; font-weight: 400; color: var(--tv-muted); }
+#travelator-screens .cp-day-nav small { display: block; font-size: 10px; color: var(--tv-muted); line-height: 1.6; margin-top: 8px; }
+#travelator-screens .cp-feedback:empty { display: none; }
+#travelator-screens .cp-feedback:not(:empty) { background: var(--tv-soft); border: 1px solid var(--tv-line); border-radius: 10px; padding: 13px 15px; margin-bottom: 19px; font-size: 12px; line-height: 1.7; }
+#travelator-screens .cp-feedback > div { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 6px; }
+#travelator-screens .cp-feedback button { display: flex; align-items: center; gap: 6px; min-height: 36px; padding: 4px 0; border: 0; background: none; color: var(--tv-primary); font-size: 12px; cursor: pointer; }
+#travelator-screens .cp-feedback button svg { width: 14px; height: 14px; }
+#travelator-screens .cp-day-heading { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; margin: 7px 0 13px; }
+#travelator-screens .cp-day-heading p { color: var(--tv-muted); font-size: 9px; font-weight: 550; letter-spacing: 1px; text-transform: uppercase; margin: 0 0 7px; }
+#travelator-screens .cp-day-heading h3 { margin: 0; font-size: 23px; letter-spacing: -.5px; font-weight: 600; scroll-margin-top: 24px; }
+#travelator-screens .cp-total { text-align: right; flex-shrink: 0; }
+#travelator-screens .cp-total strong { color: var(--tv-primary); font-size: 23px; font-weight: 600; letter-spacing: -.5px; }
+#travelator-screens .cp-total > span { display: block; margin-top: 6px; font-size: 11px; color: var(--tv-muted); }
+#travelator-screens .cp-time-breakdown { color: var(--tv-muted); font-size: 12px; margin: 0 0 10px; line-height: 1.7; }
+#travelator-screens .cp-pace-note { font-size: 11px; color: #617258; margin: 0 0 18px; line-height: 1.7; }
+#travelator-screens .cp-arrival, #travelator-screens .cp-overloaded { display: flex; align-items: flex-start; gap: 9px; border-radius: 10px; font-size: 12px; line-height: 1.8; padding: 12px 15px; margin: 12px 0 18px; background: #f5f0e6; color: #6c604b; }
+#travelator-screens .cp-overloaded { background: #faecdf; color: #885732; }
+#travelator-screens .cp-arrival svg, #travelator-screens .cp-overloaded svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 3px; }
+#travelator-screens .cp-visits { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+#travelator-screens .cp-visit { border: 1px solid var(--tv-line); border-radius: 13px; background: var(--tv-surface); padding: 19px 21px 16px; }
+#travelator-screens .cp-visit-heading { display: flex; align-items: flex-start; gap: 12px; }
+#travelator-screens .cp-visit-number { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--tv-soft); color: var(--tv-primary); font-size: 11px; flex-shrink: 0; margin-top: 1px; }
+#travelator-screens .cp-visit-heading > div { min-width: 0; flex: 1; }
+#travelator-screens .cp-visit-heading h4 { font-size: 16px; font-weight: 600; line-height: 1.5; margin: 0 0 6px; }
+#travelator-screens .cp-visit-heading p { color: var(--tv-muted); font-size: 11px; line-height: 1.7; margin: 0; }
+#travelator-screens .cp-visit-heading p > span { display: inline-flex; align-items: center; gap: 4px; margin-left: 12px; }
+#travelator-screens .cp-visit-heading p svg { width: 11px; height: 11px; color: var(--tv-primary); }
+#travelator-screens .cp-visit-time { display: flex; align-items: center; gap: 5px; flex-shrink: 0; font-size: 13px; color: var(--tv-ink); padding-top: 3px; }
+#travelator-screens .cp-visit-time svg { width: 14px; height: 14px; color: var(--tv-muted); }
+#travelator-screens .cp-visit-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; padding-top: 14px; margin-left: 38px; }
+#travelator-screens .cp-visit-actions > button { display: flex; align-items: center; gap: 7px; min-height: 38px; cursor: pointer; font-size: 11px; border-radius: 7px; }
+#travelator-screens .cp-move-button { border: 1px solid var(--tv-line); background: white; color: var(--tv-primary); padding: 7px 11px; }
+#travelator-screens .cp-move-button svg { width: 14px; height: 14px; }
+#travelator-screens .cp-place-more { border: 0; background: none; color: var(--tv-muted); padding: 6px 1px; }
+#travelator-screens .cp-place-more svg { width: 12px; height: 12px; }
+#travelator-screens .cp-place-more[aria-expanded="true"] svg { transform: rotate(180deg); }
+#travelator-screens .cp-order-buttons { display: flex; gap: 5px; margin-left: auto; }
+#travelator-screens .cp-order-buttons button { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 7px; border: 1px solid var(--tv-line); background: var(--tv-bg); color: var(--tv-muted); cursor: pointer; }
+#travelator-screens .cp-order-buttons button:disabled { opacity: .35; cursor: default; }
+#travelator-screens .cp-order-buttons svg { width: 14px; height: 14px; }
+#travelator-screens .cp-place-info { padding-top: 10px; margin: 12px 0 0 38px; border-top: 1px solid var(--tv-line); font-size: 12px; color: var(--tv-muted); line-height: 1.8; }
+#travelator-screens .cp-place-info p { margin: 0 0 8px; }
+#travelator-screens .cp-place-info > div { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+#travelator-screens .cp-place-info button { display: flex; align-items: center; gap: 6px; min-height: 38px; padding: 4px 0; color: var(--tv-primary); background: none; border: 0; cursor: pointer; font-size: 11px; }
+#travelator-screens .cp-place-info svg { width: 13px; height: 13px; }
+#travelator-screens .cp-empty { border: 1px dashed var(--tv-line); border-radius: 12px; padding: 25px 20px; margin: 16px 0 12px; text-align: center; color: var(--tv-muted); }
+#travelator-screens .cp-empty > svg { width: 23px; height: 23px; stroke-width: 1.3; margin-bottom: 8px; }
+#travelator-screens .cp-empty h4 { color: var(--tv-ink); font-size: 16px; font-weight: 550; margin: 0 0 8px; }
+#travelator-screens .cp-empty p { font-size: 12px; line-height: 1.8; margin: 0 auto; max-width: 460px; }
+#travelator-screens .cp-estimate { color: var(--tv-muted); font-size: 10px; line-height: 1.8; margin: 12px 0 20px; }
+#travelator-screens .city-day-planner > details { border-top: 1px solid var(--tv-line); }
+#travelator-screens .city-day-planner > details > summary { display: flex; align-items: center; gap: 10px; min-height: 57px; padding: 10px 0; font-size: 12px; color: var(--tv-muted); }
+#travelator-screens .city-day-planner > details > summary > svg { width: 16px; height: 16px; flex-shrink: 0; }
+#travelator-screens .city-day-planner > details > summary > svg:last-child { width: 14px; margin-left: auto; }
+#travelator-screens .city-day-planner > details > summary small { display: block; color: var(--tv-muted); font-size: 10px; margin-top: 4px; }
+#travelator-screens .city-day-planner > .cp-catalogue > summary { color: var(--tv-primary); }
+#travelator-screens .cp-catalogue-list { display: grid; gap: 10px; padding: 0 0 18px; }
+#travelator-screens .cp-catalogue-place { display: flex; gap: 20px; align-items: flex-start; border: 1px solid var(--tv-line); border-radius: 11px; background: var(--tv-surface); padding: 16px 18px; }
+#travelator-screens .cp-catalogue-place > div { flex: 1; min-width: 0; }
+#travelator-screens .cp-catalogue-place h4 { font-size: 14px; font-weight: 550; margin: 0 0 6px; }
+#travelator-screens .cp-catalogue-place span { font-size: 11px; color: var(--tv-muted); }
+#travelator-screens .cp-catalogue-place p { margin: 8px 0 0; font-size: 12px; line-height: 1.7; color: var(--tv-muted); }
+#travelator-screens .cp-catalogue-place button { display: flex; align-items: center; gap: 5px; background: var(--tv-soft); color: var(--tv-primary); border: 0; border-radius: 7px; padding: 8px 11px; min-height: 38px; font-size: 11px; cursor: pointer; flex-shrink: 0; }
+#travelator-screens .cp-catalogue-place button svg { width: 13px; height: 13px; }
+#travelator-screens .cp-map-content { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 25px; padding-bottom: 20px; }
+#travelator-screens .cp-map-content .tv-city-map { border: 1px solid var(--tv-line); border-radius: 12px; width: 100%; max-height: none; }
+#travelator-screens .cp-map-legend { color: var(--tv-muted); font-size: 10px; line-height: 1.8; margin: 12px 0 0; }
+#travelator-screens .cp-map-place { padding: 8px 0; font-size: 12px; color: var(--tv-muted); line-height: 1.8; }
+#travelator-screens .cp-map-place h4 { font-size: 18px; color: var(--tv-ink); font-weight: 550; margin: 0 0 10px; }
+#travelator-screens .cp-map-place > p { margin: 0 0 10px; }
+#travelator-screens .cp-map-place > span { display: block; margin-bottom: 14px; }
+#travelator-screens .cp-map-place > button, #travelator-screens .cp-settings > button { display: flex; align-items: center; gap: 7px; min-height: 40px; padding: 8px 12px; border: 1px solid var(--tv-line); border-radius: 7px; color: var(--tv-primary); background: white; font-size: 12px; cursor: pointer; margin: 8px 0; }
+#travelator-screens .cp-map-place > button svg, #travelator-screens .cp-settings > button svg { width: 14px; height: 14px; }
+#travelator-screens .cp-settings > p { color: var(--tv-muted); font-size: 12px; line-height: 1.8; max-width: 740px; margin: 0 0 12px; }
+#travelator-screens .cp-settings > button { margin-bottom: 18px; }
+#travelator-screens .cp-events .travel-moments { margin-top: 0; padding-top: 0; border: 0; }
+#travelator-screens .cp-moving-place { display: grid; gap: 9px; margin: 0 0 15px; }
+#travelator-screens .cp-moving-place > strong { font-size: 18px; font-weight: 550; line-height: 1.5; }
+#travelator-screens .cp-moving-place > span { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--tv-muted); }
+#travelator-screens .cp-moving-place svg { width: 14px; height: 14px; }
+#travelator-screens .cp-move-hint { font-size: 12px; color: var(--tv-muted); line-height: 1.8; margin: 12px 0 16px; }
+#travelator-screens .cp-move-days { display: grid; gap: 9px; }
+#travelator-screens .cp-move-days button { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 15px 18px; width: 100%; text-align: left; border: 1px solid var(--tv-line); border-radius: 10px; color: var(--tv-ink); background: var(--tv-surface); cursor: pointer; }
+#travelator-screens .cp-move-days button:hover:not(:disabled) { border-color: var(--tv-primary); background: var(--tv-softest); }
+#travelator-screens .cp-move-days button:disabled { background: var(--tv-bg); color: var(--tv-muted); cursor: default; }
+#travelator-screens .cp-move-days button > span { display: grid; gap: 6px; }
+#travelator-screens .cp-move-days strong { font-size: 14px; font-weight: 550; }
+#travelator-screens .cp-move-days strong small { font-size: 12px; font-weight: 400; color: var(--tv-muted); margin-left: 12px; }
+#travelator-screens .cp-move-days button > span > span { font-size: 12px; color: var(--tv-muted); line-height: 1.6; }
+#travelator-screens .cp-move-days em { font-size: 11px; font-style: normal; color: #94603b; line-height: 1.7; }
+#travelator-screens .cp-move-days svg { width: 17px; height: 17px; color: var(--tv-primary); flex-shrink: 0; }
+#travelator-screens .cp-move-days .cp-busy-option:not(:disabled) { background: #fcf6ed; border-color: #e8dac6; }
+#travelator-screens .cp-unassign { border: 0; background: none; color: var(--tv-muted); cursor: pointer; font-size: 12px; min-height: 44px; padding: 8px 0; margin-top: 9px; }
+#travelator-screens .cp-move-required { display: flex; align-items: flex-start; gap: 7px; color: var(--tv-muted); font-size: 12px; line-height: 1.7; margin: 18px 0 0; }
+#travelator-screens .cp-move-required svg { width: 14px; height: 14px; flex-shrink: 0; margin-top: 3px; }
+@media (max-width: 600px) {
+  #travelator-screens .cp-heading h2 { font-size: 28px; }
+  #travelator-screens .cp-day-nav button { flex-basis: 118px; padding: 12px; }
+  #travelator-screens .cp-day-heading { align-items: flex-start; gap: 12px; }
+  #travelator-screens .cp-day-heading h3 { font-size: 20px; }
+  #travelator-screens .cp-total strong { font-size: 19px; }
+  #travelator-screens .cp-total > span { font-size: 10px; }
+  #travelator-screens .cp-visit { padding: 15px 14px; }
+  #travelator-screens .cp-visit-heading { flex-wrap: wrap; gap: 10px; }
+  #travelator-screens .cp-visit-heading h4 { font-size: 15px; }
+  #travelator-screens .cp-visit-time { margin-left: 36px; width: calc(100% - 36px); font-size: 12px; padding-top: 0; }
+  #travelator-screens .cp-visit-heading p > span { display: flex; margin: 4px 0 0; }
+  #travelator-screens .cp-visit-actions { margin-left: 0; gap: 12px; }
+  #travelator-screens .cp-visit-actions > button { min-height: 42px; }
+  #travelator-screens .cp-order-buttons button { width: 34px; height: 40px; }
+  #travelator-screens .cp-place-info { margin-left: 0; }
+  #travelator-screens .cp-map-content { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  #travelator-screens .cp-catalogue-place { padding: 14px; gap: 12px; flex-wrap: wrap; }
+  #travelator-screens .cp-catalogue-place > div { flex-basis: 100%; }
+}

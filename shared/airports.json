@@ -1,0 +1,77 @@
+{
+  "source": "https://openflights.org/data.html",
+  "license": "Open Database License (ODbL)",
+  "checkedAt": "2026-10-27",
+  "records": {
+    "nan": [
+      "NKG"
+    ],
+    "wux": [
+      "WUX"
+    ],
+    "fuz": [
+      "FOC"
+    ],
+    "qua": [
+      "JJN"
+    ],
+    "gua": [
+      "CAN"
+    ],
+    "she": [
+      "SZX"
+    ],
+    "zhu": [
+      "ZUH"
+    ],
+    "hai": [
+      "HAK"
+    ],
+    "dal": [
+      "DLC"
+    ],
+    "yan": [
+      "YNT"
+    ],
+    "wei": [
+      "WEH"
+    ],
+    "luo": [
+      "LYA"
+    ],
+    "dat": [
+      "DAT"
+    ],
+    "kun": [
+      "KMG"
+    ],
+    "dli": [
+      "DLU"
+    ],
+    "lij": [
+      "LJG"
+    ],
+    "shr": [
+      "DIG"
+    ],
+    "cho": [
+      "CKG"
+    ],
+    "guy": [
+      "KWE"
+    ],
+    "ans": [
+      "AVA"
+    ],
+    "wuy": [
+      "WUS"
+    ],
+    "jin": [
+      "TNA"
+    ],
+    "nin": [
+      "NGB"
+    ]
+  },
+  "notes": "Коды помогают сопоставлять выдачу; работа аэропорта и наличие рейса не подтверждаются этим справочником. Устаревшие/неоднозначные записи Сучжоу и Циньхуандао исключены."
+}

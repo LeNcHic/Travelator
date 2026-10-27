@@ -1,0 +1,159 @@
+#travelator-screens .trip-plan { max-width: 1040px; margin: 0 auto; padding-top: 28px; }
+#travelator-screens .trip-plan .tp-back { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; border: 0; background: none; color: var(--tv-muted); font-size: 13px; padding: 0; margin-bottom: 15px; cursor: pointer; }
+#travelator-screens .trip-plan .tp-back svg { width: 16px; height: 16px; }
+#travelator-screens .trip-plan .tp-heading { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-bottom: 26px; }
+#travelator-screens .trip-plan .tp-kicker { font-size: 10px; letter-spacing: 1.5px; font-weight: 700; color: var(--tv-primary); margin: 0 0 10px; }
+#travelator-screens .trip-plan .tp-heading h1 { font-size: clamp(28px, 3vw, 39px); line-height: 1.15; letter-spacing: -1.3px; margin: 0 0 11px; }
+#travelator-screens .trip-plan .tp-dates { color: var(--tv-muted); margin: 0; font-size: 13px; line-height: 1.6; }
+#travelator-screens .trip-plan .tp-heading > button { flex-shrink: 0; }
+#travelator-screens .trip-plan .tp-facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--tv-line); border-radius: 16px; background: var(--tv-surface, white); padding: 19px 0; }
+#travelator-screens .trip-plan .tp-facts > div { display: flex; gap: 10px; padding: 0 20px; align-items: center; min-width: 0; }
+#travelator-screens .trip-plan .tp-facts > div + div { border-left: 1px solid var(--tv-line); }
+#travelator-screens .trip-plan .tp-facts svg { width: 19px; height: 19px; flex-shrink: 0; color: var(--tv-primary); stroke-width: 1.6; }
+#travelator-screens .trip-plan .tp-facts strong { font-size: 18px; letter-spacing: -.4px; display: block; font-weight: 600; line-height: 1.3; }
+#travelator-screens .trip-plan .tp-facts small { display: block; margin-top: 5px; font-size: 10px; line-height: 1.5; color: var(--tv-muted); }
+#travelator-screens .trip-plan .tp-alert { display: flex; align-items: flex-start; gap: 10px; padding: 13px 16px; background: #fbefdf; color: #81552f; font-size: 13px; border-radius: 12px; margin: 12px 0 0; }
+#travelator-screens .trip-plan .tp-alert svg { width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px; }
+#travelator-screens .trip-plan .tp-notice:empty { display: none; }
+#travelator-screens .trip-plan .tp-notice:not(:empty) { padding: 12px 16px; margin: 12px 0 0; background: var(--tv-soft); border-radius: 12px; font-size: 13px; }
+#travelator-screens .trip-plan summary { list-style: none; cursor: pointer; }
+#travelator-screens .trip-plan summary::-webkit-details-marker { display: none; }
+#travelator-screens .trip-plan summary > svg:last-child { transition: transform .15s; }
+#travelator-screens .trip-plan details[open] > summary > svg:last-child { transform: rotate(180deg); }
+#travelator-screens .trip-plan .tp-map-details { margin: 9px 0 22px; border-bottom: 1px solid var(--tv-line); }
+#travelator-screens .trip-plan .tp-map-details > summary { display: flex; align-items: center; gap: 9px; min-height: 49px; padding: 0 3px; color: var(--tv-primary); font-size: 13px; }
+#travelator-screens .trip-plan .tp-map-details > summary svg { width: 16px; height: 16px; }
+#travelator-screens .trip-plan .tp-map-details > summary svg:last-child { width: 14px; margin-left: auto; }
+#travelator-screens .trip-plan .tp-map-card { border: 1px solid var(--tv-line); border-radius: 14px; overflow: hidden; background: var(--tv-surface, white); margin-bottom: 17px; }
+#travelator-screens .trip-plan .tp-map-card .tv-map { height: 400px; min-height: 300px; width: 100%; border-radius: 0; }
+#travelator-screens .trip-plan .tp-map-foot { display: flex; justify-content: space-between; gap: 10px; padding: 12px 16px; color: var(--tv-muted); font-size: 10px; line-height: 1.5; }
+#travelator-screens .trip-plan .tp-map-foot a { color: inherit; text-decoration: none; flex-shrink: 0; }
+#travelator-screens .trip-plan .tp-map-loading { padding: 50px 20px; text-align: center; font-size: 13px; color: var(--tv-muted); }
+#travelator-screens .trip-plan .tp-section-title { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin: 0 0 9px; }
+#travelator-screens .trip-plan .tp-section-title h2 { font-size: 19px; letter-spacing: -.4px; margin: 0; }
+#travelator-screens .trip-plan .tp-section-title > span { font-size: 11px; color: var(--tv-muted); }
+#travelator-screens .trip-plan .tp-flight { display: flex; align-items: center; gap: 12px; padding: 17px 21px; color: var(--tv-muted); }
+#travelator-screens .trip-plan .tp-flight > svg { width: 18px; height: 18px; color: var(--tv-primary); flex-shrink: 0; }
+#travelator-screens .trip-plan .tp-flight > div { display: grid; gap: 5px; }
+#travelator-screens .trip-plan .tp-flight strong { color: var(--tv-ink); font-size: 13px; font-weight: 550; }
+#travelator-screens .trip-plan .tp-flight span, #travelator-screens .trip-plan .tp-flight > small { font-size: 11px; }
+#travelator-screens .trip-plan .tp-flight > small { margin-left: auto; text-align: right; }
+#travelator-screens .trip-plan .tp-stops { list-style: none; margin: 0; padding: 0; }
+#travelator-screens .trip-plan .tp-stop { border: 1px solid var(--tv-line); border-radius: 17px; background: var(--tv-surface, white); overflow: hidden; }
+#travelator-screens .trip-plan .tp-stop-main { display: flex; gap: 17px; align-items: center; padding: 20px 23px; }
+#travelator-screens .trip-plan .tp-stop-main > img { width: 74px; height: 74px; object-fit: cover; border-radius: 11px; flex-shrink: 0; }
+#travelator-screens .trip-plan .tp-stop-number { display: flex; align-items: center; justify-content: center; background: var(--tv-soft); color: var(--tv-primary); width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0; font-size: 11px; font-weight: 650; }
+#travelator-screens .trip-plan .tp-stop-heading { min-width: 0; flex: 1; }
+#travelator-screens .trip-plan .tp-stop-heading h3 { font-size: 22px; font-weight: 600; letter-spacing: -.5px; margin: 0 0 6px; line-height: 1.2; }
+#travelator-screens .trip-plan .tp-stop-heading p { color: var(--tv-ink); font-size: 12px; line-height: 1.5; margin: 0 0 5px; }
+#travelator-screens .trip-plan .tp-stop-heading small { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--tv-muted); }
+#travelator-screens .trip-plan .tp-stop-heading small svg { width: 11px; height: 11px; color: var(--tv-primary); flex-shrink: 0; }
+#travelator-screens .trip-plan .tp-stop-duration { text-align: right; flex-shrink: 0; }
+#travelator-screens .trip-plan .tp-stop-duration strong { display: block; color: var(--tv-primary); font-size: 21px; font-weight: 600; letter-spacing: -.4px; }
+#travelator-screens .trip-plan .tp-stop-duration small { display: block; font-size: 10px; color: var(--tv-muted); margin-top: 7px; }
+#travelator-screens .trip-plan .tp-partial-day { display: flex; align-items: flex-start; gap: 7px; padding: 0 23px 14px; margin: -3px 0 0; color: var(--tv-muted); font-size: 11px; line-height: 1.6; }
+#travelator-screens .trip-plan .tp-partial-day svg { width: 14px; height: 14px; flex-shrink: 0; margin-top: 1px; }
+#travelator-screens .trip-plan .tp-stop-details { scroll-margin: 25px; border-top: 1px solid var(--tv-line); }
+#travelator-screens .trip-plan .tp-stop-details > summary { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 47px; padding: 8px 23px; font-size: 12px; color: var(--tv-primary); }
+#travelator-screens .trip-plan .tp-stop-details > summary svg { width: 14px; height: 14px; }
+#travelator-screens .trip-plan .tp-stop-details-body { padding: 0 23px 20px; }
+#travelator-screens .trip-plan .tp-description { color: var(--tv-muted); font-size: 13px; line-height: 1.8; margin: 3px 0 12px; max-width: 770px; }
+#travelator-screens .trip-plan .tp-stop-details-body .tv-experience-tags { margin: 10px 0 12px; }
+#travelator-screens .trip-plan .tp-required { display: flex; align-items: flex-start; gap: 6px; font-size: 12px; line-height: 1.7; color: var(--tv-muted); margin: 10px 0; }
+#travelator-screens .trip-plan .tp-required svg { width: 13px; height: 13px; flex-shrink: 0; margin-top: 3px; color: var(--tv-primary); }
+#travelator-screens .trip-plan .tp-plan-city { display: flex; align-items: center; gap: 8px; border: 1px solid var(--tv-line); background: white; color: var(--tv-primary); border-radius: 9px; min-height: 44px; padding: 10px 13px; margin: 13px 0 17px; cursor: pointer; font-size: 12px; font-weight: 600; }
+#travelator-screens .trip-plan .tp-plan-city svg { width: 15px; height: 15px; }
+#travelator-screens .trip-plan .tp-plan-city svg:last-child { margin-left: 12px; }
+#travelator-screens .trip-plan .tp-edit-days { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 0 0 15px; font-size: 12px; color: var(--tv-muted); }
+#travelator-screens .trip-plan .tp-edit-days > span:last-child { display: flex; align-items: center; gap: 10px; }
+#travelator-screens .trip-plan .tp-edit-days strong { font-size: 12px; font-weight: 500; }
+#travelator-screens .trip-plan .tp-edit-days button { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: var(--tv-bg); border: 1px solid var(--tv-line); border-radius: 8px; cursor: pointer; }
+#travelator-screens .trip-plan .tp-edit-days svg { width: 13px; height: 13px; }
+#travelator-screens .trip-plan .tp-offer { display: flex; width: 100%; text-align: left; align-items: flex-start; gap: 12px; background: var(--tv-bg, #f7f5f0); border: 1px solid var(--tv-line); padding: 16px; border-radius: 11px; cursor: pointer; }
+#travelator-screens .trip-plan .tp-offer-icon { display: flex; padding-top: 1px; color: var(--tv-primary); }
+#travelator-screens .trip-plan .tp-offer-icon svg { width: 18px; height: 18px; }
+#travelator-screens .trip-plan .tp-offer-copy { flex: 1; display: flex; flex-direction: column; gap: 5px; min-width: 0; overflow-wrap: anywhere; }
+#travelator-screens .trip-plan .tp-offer-copy > small { font-size: 9px; letter-spacing: .65px; font-weight: 600; color: var(--tv-muted); }
+#travelator-screens .trip-plan .tp-offer-copy > strong { font-size: 14px; font-weight: 600; line-height: 1.4; }
+#travelator-screens .trip-plan .tp-offer-copy > span { font-size: 12px; color: var(--tv-muted); line-height: 1.6; }
+#travelator-screens .trip-plan .tp-offer-copy > em { font-size: 10px; color: var(--tv-muted); font-style: normal; line-height: 1.6; }
+#travelator-screens .trip-plan .tp-offer > svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 3px; color: var(--tv-primary); }
+#travelator-screens .trip-plan .tp-local-tips { border-top: 1px solid var(--tv-line); margin-top: 18px; color: var(--tv-muted); font-size: 12px; line-height: 1.8; }
+#travelator-screens .trip-plan .tp-local-tips > summary { display: flex; align-items: center; justify-content: space-between; min-height: 44px; }
+#travelator-screens .trip-plan .tp-local-tips > summary svg { width: 14px; height: 14px; }
+#travelator-screens .trip-plan .tp-local-tips a { color: var(--tv-primary); overflow-wrap: anywhere; }
+#travelator-screens .trip-plan .tp-local-tips > small { font-size: 10px; }
+#travelator-screens .trip-plan .tp-replace { display: flex; align-items: center; gap: 6px; padding: 10px 0; min-height: 40px; border: 0; background: none; color: var(--tv-muted); font-size: 12px; cursor: pointer; text-align: left; }
+#travelator-screens .trip-plan .tp-replace svg { width: 13px; height: 13px; }
+#travelator-screens .trip-plan .tp-transfer { position: relative; margin: 0 0 0 35px; padding: 20px 0 20px 30px; border-left: 1px dashed #c4cabd; }
+#travelator-screens .trip-plan .tp-transfer-icon { position: absolute; top: 22px; left: -15px; display: flex; justify-content: center; align-items: center; width: 29px; height: 29px; background: var(--tv-bg, #faf9f6); color: var(--tv-primary); }
+#travelator-screens .trip-plan .tp-transfer-icon svg { width: 18px; height: 18px; stroke-width: 1.6; }
+#travelator-screens .trip-plan .tp-transfer-main h3 { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; color: var(--tv-muted); margin: 0 0 7px; }
+#travelator-screens .trip-plan .tp-transfer-main h3 svg { width: 12px; height: 12px; }
+#travelator-screens .trip-plan .tp-transfer-main p { font-size: 15px; font-weight: 550; color: var(--tv-ink); margin: 0 0 6px; }
+#travelator-screens .trip-plan .tp-transfer-main small { display: block; font-size: 11px; line-height: 1.6; color: var(--tv-muted); }
+#travelator-screens .trip-plan .tp-ticket-details { margin-top: 5px; }
+#travelator-screens .trip-plan .tp-ticket-details > summary { display: flex; align-items: center; gap: 9px; width: fit-content; min-height: 36px; color: var(--tv-primary); font-size: 11px; }
+#travelator-screens .trip-plan .tp-ticket-details > summary svg { width: 12px; height: 12px; }
+#travelator-screens .trip-plan .tp-ticket-body { max-width: 760px; padding: 6px 0 0; }
+#travelator-screens .trip-plan .tp-ticket-body p { margin: 0 0 9px; color: var(--tv-muted); font-size: 12px; line-height: 1.7; }
+#travelator-screens .trip-plan .tp-ticket-action { display: flex; align-items: center; justify-content: space-between; gap: 20px; text-align: left; background: var(--tv-surface, white); border: 1px solid var(--tv-line); border-radius: 9px; color: var(--tv-primary); padding: 12px 14px; margin-top: 13px; cursor: pointer; font-size: 12px; }
+#travelator-screens .trip-plan .tp-ticket-action small { display: block; color: var(--tv-muted); font-size: 11px; margin-top: 6px; line-height: 1.5; }
+#travelator-screens .trip-plan .tp-ticket-action svg { width: 15px; height: 15px; flex-shrink: 0; }
+#travelator-screens .trip-plan .tp-outdated { color: var(--tv-warning, #895724); }
+#travelator-screens .trip-plan .tp-budget { margin-top: 16px; border-top: 1px solid var(--tv-line); }
+#travelator-screens .trip-plan .tp-budget > summary { display: flex; align-items: center; gap: 10px; min-height: 62px; font-size: 12px; }
+#travelator-screens .trip-plan .tp-budget > summary svg { width: 16px; height: 16px; flex-shrink: 0; }
+#travelator-screens .trip-plan .tp-budget > summary strong { margin-left: auto; font-weight: 600; white-space: nowrap; }
+#travelator-screens .trip-plan .tp-budget-body { padding: 0 0 15px; }
+#travelator-screens .trip-plan .tp-budget dl { max-width: 760px; margin: 0 0 20px; }
+#travelator-screens .trip-plan .tp-budget dl > div { display: flex; justify-content: space-between; gap: 15px; padding: 8px 0; font-size: 12px; }
+#travelator-screens .trip-plan .tp-budget dt { color: var(--tv-muted); }
+#travelator-screens .trip-plan .tp-budget dd { margin: 0; white-space: nowrap; }
+#travelator-screens .trip-plan .tp-data-body { max-width: 840px; color: var(--tv-muted); font-size: 12px; line-height: 1.8; }
+#travelator-screens .trip-plan .tp-data-body p { margin: 0 0 10px; }
+#travelator-screens .trip-plan .tp-data-body strong { color: var(--tv-ink); font-weight: 550; }
+#travelator-screens .trip-plan .tp-day-planner { min-width: 0; margin-top: 26px; }
+#travelator-screens .trip-plan .tp-day-planner .tv-city-heading h2 { font-size: 30px; }
+@media (max-width: 800px) {
+  #travelator-screens .trip-plan .tp-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 0; }
+  #travelator-screens .trip-plan .tp-facts > div { padding: 16px 18px; }
+  #travelator-screens .trip-plan .tp-facts > div:nth-child(3) { border-left: 0; }
+  #travelator-screens .trip-plan .tp-facts > div:nth-child(n+3) { border-top: 1px solid var(--tv-line); }
+  #travelator-screens .trip-plan .tp-heading { align-items: flex-start; }
+  #travelator-screens .trip-plan .tp-section-title > span { display: none; }
+}
+@media (max-width: 500px) {
+  #travelator-screens .trip-plan { padding-top: 16px; }
+  #travelator-screens .trip-plan .tp-back { margin-bottom: 15px; }
+  #travelator-screens .trip-plan .tp-heading { display: block; margin-bottom: 20px; }
+  #travelator-screens .trip-plan .tp-heading h1 { letter-spacing: -.9px; }
+  #travelator-screens .trip-plan .tp-heading > button { margin-top: 17px; width: 100%; }
+  #travelator-screens .trip-plan .tp-facts > div { padding: 14px 12px; gap: 8px; }
+  #travelator-screens .trip-plan .tp-facts strong { font-size: 16px; }
+  #travelator-screens .trip-plan .tp-facts svg { width: 17px; height: 17px; }
+  #travelator-screens .trip-plan .tp-facts small { font-size: 9px; }
+  #travelator-screens .trip-plan .tp-map-details { margin-bottom: 21px; }
+  #travelator-screens .trip-plan .tp-map-card .tv-map { height: 320px; }
+  #travelator-screens .trip-plan .tp-map-foot { padding: 10px; font-size: 9px; }
+  #travelator-screens .trip-plan .tp-flight { gap: 9px; padding: 16px 7px; flex-wrap: wrap; }
+  #travelator-screens .trip-plan .tp-flight > small { width: 100%; margin-left: 27px; text-align: left; font-size: 10px; }
+  #travelator-screens .trip-plan .tp-stop-main { padding: 16px 14px; gap: 11px; flex-wrap: wrap; }
+  #travelator-screens .trip-plan .tp-stop-number { display: none; }
+  #travelator-screens .trip-plan .tp-stop-main > img { width: 50px; height: 68px; border-radius: 8px; }
+  #travelator-screens .trip-plan .tp-stop-heading h3 { font-size: 20px; }
+  #travelator-screens .trip-plan .tp-stop-heading p { font-size: 10px; }
+  #travelator-screens .trip-plan .tp-stop-heading small { font-size: 10px; }
+  #travelator-screens .trip-plan .tp-stop-duration strong { font-size: 17px; }
+  #travelator-screens .trip-plan .tp-stop-duration small { font-size: 9px; margin-top: 6px; }
+  #travelator-screens .trip-plan .tp-stop-details > summary { padding: 8px 14px; }
+  #travelator-screens .trip-plan .tp-stop-details-body { padding: 0 14px 15px; }
+  #travelator-screens .trip-plan .tp-partial-day { padding: 0 14px 12px; font-size: 10px; }
+  #travelator-screens .trip-plan .tp-transfer { margin-left: 21px; padding: 18px 0 18px 24px; }
+  #travelator-screens .trip-plan .tp-transfer-icon { top: 20px; }
+  #travelator-screens .trip-plan .tp-transfer-main p { font-size: 13px; line-height: 1.6; }
+  #travelator-screens .trip-plan .tp-transfer-main small { font-size: 10px; }
+  #travelator-screens .trip-plan .tp-ticket-details > summary { min-height: 44px; }
+  #travelator-screens .trip-plan .tp-budget > summary { gap: 7px; flex-wrap: wrap; padding: 13px 0; min-height: 62px; font-size: 11px; }
+  #travelator-screens .trip-plan .tp-budget > summary strong { font-size: 11px; }
+}

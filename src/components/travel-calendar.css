@@ -1,0 +1,171 @@
+/* Date discovery and the persistent, compact trip selection. */
+html:has(.destination-selection-dock) { scroll-padding-bottom:120px; }
+#travelator-screens:has(.destination-selection-dock) .tv-app-footer { padding-bottom:120px; }
+#travelator-screens .country-section-nav { display:flex; flex-wrap:wrap; justify-content:center; gap:15px 35px; max-width:1180px; margin:20px auto -32px; }
+#travelator-screens .country-section-nav > a { display:flex; align-items:center; min-height:44px; font-size:12px; color:var(--tv-muted); text-decoration:none; border-bottom:1px solid var(--tv-line); }
+#travelator-screens .country-section-nav > a:hover { color:var(--tv-primary); border-color:var(--tv-primary); }
+#travelator-screens .discover-screen.has-selection { padding-bottom:110px; }
+#travelator-screens .destination-selection-dock { position:fixed; z-index:30; left:50%; bottom:max(18px,env(safe-area-inset-bottom)); transform:translateX(-50%); width:min(960px,calc(100% - 40px)); border:1px solid #d9ddcf; border-radius:14px; background:#fffffff5; box-shadow:0 10px 50px #26332c26; backdrop-filter:blur(18px); }
+#travelator-screens .selection-dock-row { display:flex; align-items:center; justify-content:space-between; gap:22px; padding:13px 17px; }
+#travelator-screens .selection-dock-summary { display:flex; align-items:center; gap:11px; border:0; background:transparent; text-align:left; padding:3px; min-width:0; flex:1; color:var(--tv-ink); min-height:46px; }
+#travelator-screens .selection-dock-summary > svg { width:20px; height:20px; flex-shrink:0; color:var(--tv-primary); }
+#travelator-screens .selection-dock-summary > svg:last-child { width:15px; color:var(--tv-muted); }
+#travelator-screens .selection-dock-summary[aria-expanded=true] > svg:last-child { transform:rotate(180deg); }
+#travelator-screens .selection-dock-summary > span { display:flex; flex-direction:column; gap:5px; min-width:0; }
+#travelator-screens .selection-dock-summary strong { font-size:13px; font-weight:600; }
+#travelator-screens .selection-dock-summary small { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:11px; color:var(--tv-muted); }
+#travelator-screens .selection-dock-row > .tv-button { flex-shrink:0; min-height:46px; font-size:12px; padding:12px 18px; }
+#travelator-screens .selection-dock-places { padding:16px 20px; border-bottom:1px solid var(--tv-line); max-height:35vh; overflow:auto; }
+#travelator-screens .selection-dock-places > p { font-size:12px; margin:0 0 12px; color:var(--tv-muted); }
+#travelator-screens .selection-dock-places > div { display:flex; flex-wrap:wrap; gap:8px; }
+#travelator-screens .selection-dock-places button { display:flex; align-items:center; gap:8px; min-height:38px; border:1px solid #e0d9cb; border-radius:7px; background:#f7f4ed; color:var(--tv-ink); font-size:12px; padding:7px 10px; }
+#travelator-screens .selection-dock-places button svg { width:13px; height:13px; color:var(--tv-muted); }
+#travelator-screens .selection-dock-places > small { display:block; margin-top:10px; color:var(--tv-muted); font-size:11px; }
+#travelator-screens .trip-stage-nav { display:flex; justify-content:center; gap:24px; padding:17px 20px 0; max-width:1320px; margin:auto; }
+#travelator-screens .trip-stage-nav > button { display:flex; align-items:center; gap:7px; background:none; border:0; color:var(--tv-muted); font-size:12px; min-height:42px; padding:4px 0; }
+#travelator-screens .trip-stage-nav > button > span { display:grid; place-items:center; border:1px solid var(--tv-line); width:22px; height:22px; border-radius:50%; font-size:10px; }
+#travelator-screens .trip-stage-nav > button[aria-current=step] { color:var(--tv-primary); font-weight:600; }
+#travelator-screens .trip-stage-nav > button[aria-current=step] > span { background:var(--tv-primary); color:white; border-color:var(--tv-primary); }
+#travelator-screens .trip-stage-nav > button:disabled { opacity:.45; }
+#travelator-screens .trip-stage-nav svg { width:12px; height:12px; margin-left:15px; }
+#travelator-screens #main:focus { outline:none; }
+#travelator-screens .date-discovery { padding-top:0; }
+#travelator-screens .date-discovery-intro { display:flex; align-items:center; justify-content:space-between; gap:30px; margin-bottom:22px; }
+#travelator-screens .date-discovery-intro h2 { font-size:32px; font-weight:550; letter-spacing:-.9px; margin:0 0 12px; }
+#travelator-screens .date-discovery-intro > div > p:last-child { font-size:13px; line-height:1.7; color:var(--tv-muted); margin:0; }
+#travelator-screens .date-period-toggle { display:flex; align-items:center; gap:13px; border:1px solid var(--tv-line); border-radius:10px; background:white; padding:13px 16px; color:var(--tv-ink); text-align:left; min-width:255px; }
+#travelator-screens .date-period-toggle > svg { width:19px; height:19px; color:var(--tv-primary); flex-shrink:0; }
+#travelator-screens .date-period-toggle > svg:last-child { width:14px; height:14px; margin-left:auto; color:var(--tv-muted); }
+#travelator-screens .date-period-toggle[aria-expanded=true] > svg:last-child { transform:rotate(180deg); }
+#travelator-screens .date-period-toggle small { display:block; font-size:10px; color:var(--tv-muted); margin-bottom:6px; }
+#travelator-screens .date-period-toggle strong { font-size:13px; font-weight:550; }
+#travelator-screens .date-discovery-controls { display:grid; grid-template-columns:1fr .7fr 1.5fr; gap:18px; align-items:start; padding:22px; border:1px solid var(--tv-line); background:#eeeee5; border-radius:12px; margin-bottom:22px; }
+#travelator-screens .date-discovery-controls label, #travelator-screens .date-city-filter label { display:flex; flex-direction:column; gap:8px; font-size:11px; color:var(--tv-muted); }
+#travelator-screens .date-discovery-controls input, #travelator-screens .date-city-filter select { border:1px solid #d6dacb; border-radius:7px; min-height:44px; font-size:13px; padding:10px 12px; color:var(--tv-ink); background:white; width:100%; min-width:0; }
+#travelator-screens .date-apply { padding-top:21px; }
+#travelator-screens .date-apply > button { font-size:11px; min-height:44px; padding:10px 15px; width:100%; }
+#travelator-screens .date-apply > small { display:block; font-size:10px; color:var(--tv-muted); line-height:1.6; margin-top:8px; }
+#travelator-screens .date-input-error { grid-column:1/-1; font-size:12px; color:#8b532d; margin:0; }
+#travelator-screens .date-preview-notice { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px 20px; padding:12px 16px; margin-bottom:20px; border:1px solid #e3d9c8; border-radius:8px; background:#fbf5e9; font-size:11px; line-height:1.6; color:var(--tv-muted); }
+#travelator-screens .date-preview-notice button { display:flex; align-items:center; gap:7px; border:0; background:none; color:var(--tv-primary); padding:0; min-height:36px; font-size:11px; }
+#travelator-screens .date-preview-notice svg { width:13px; height:13px; }
+#travelator-screens .route-recovery-options { max-width:720px; margin:20px auto 28px; text-align:left; }
+#travelator-screens .route-recovery-options > p { font-size:13px; line-height:1.7; margin:0 0 12px; color:var(--tv-muted); }
+#travelator-screens .route-recovery-options > div { display:flex; flex-direction:column; gap:9px; }
+#travelator-screens .route-recovery-options button { display:flex; align-items:center; justify-content:space-between; gap:20px; width:100%; min-height:70px; text-align:left; padding:16px 18px; background:#f6f5ee; color:var(--tv-ink); border:1px solid var(--tv-line); border-radius:9px; }
+#travelator-screens .route-recovery-options button:hover { background:#eeeee3; border-color:var(--tv-primary); }
+#travelator-screens .route-recovery-options button span { display:flex; flex-direction:column; gap:6px; }
+#travelator-screens .route-recovery-options button strong { font-size:13px; font-weight:550; }
+#travelator-screens .route-recovery-options button small { font-size:11px; line-height:1.6; color:var(--tv-muted); }
+#travelator-screens .route-recovery-options button svg { width:17px; height:17px; color:var(--tv-primary); flex-shrink:0; }
+#travelator-screens .route-recovery-options > small { display:block; margin-top:10px; font-size:10px; line-height:1.6; color:var(--tv-muted); }
+#travelator-screens .date-city-filter { display:flex; align-items:flex-end; gap:20px; margin-bottom:22px; }
+#travelator-screens .date-city-filter > label { min-width:235px; }
+#travelator-screens .date-city-filter > span { color:var(--tv-muted); font-size:11px; padding-bottom:14px; }
+#travelator-screens .travel-moments { min-width:0; }
+#travelator-screens .moments-heading { display:flex; align-items:flex-end; gap:15px; justify-content:space-between; padding:0 0 17px; }
+#travelator-screens .moments-heading .new-eyebrow { font-size:9px; letter-spacing:1px; margin:0 0 9px; }
+#travelator-screens .moments-heading h2 { font-size:22px; font-weight:550; letter-spacing:-.5px; margin:0; }
+#travelator-screens .moments-heading > span { font-size:11px; color:var(--tv-muted); white-space:nowrap; padding-bottom:3px; }
+#travelator-screens .moments-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:17px; }
+#travelator-screens .moment-card { border:1px solid var(--tv-line); border-radius:11px; background:#fff; min-width:0; overflow:hidden; }
+#travelator-screens .moment-content { padding:21px; display:flex; flex-direction:column; height:100%; }
+#travelator-screens .moment-kind { display:flex; align-items:center; gap:6px; font-size:10px; line-height:1.5; color:var(--tv-primary); margin:0 0 13px; }
+#travelator-screens .moment-kind svg { width:13px; height:13px; flex-shrink:0; }
+#travelator-screens .moment-kind > span { color:var(--tv-muted); }
+#travelator-screens .moment-holiday { background:#fcf7ed; border-color:#e4dbc5; }
+#travelator-screens .moment-holiday .moment-kind { color:#83622e; }
+#travelator-screens .moment-season .moment-kind { color:#667a50; }
+#travelator-screens .moment-content > h3 { font-size:17px; line-height:1.4; font-weight:600; margin:0 0 9px; letter-spacing:-.2px; }
+#travelator-screens .moment-date { font-size:10px; line-height:1.6; color:var(--tv-muted); }
+#travelator-screens .moment-overlap { display:block; font-size:10px; color:var(--tv-primary); margin-top:4px; line-height:1.6; }
+#travelator-screens .moment-description { font-size:12px; line-height:1.75; color:var(--tv-muted); margin:12px 0 16px; }
+#travelator-screens .moment-details { margin-top:auto; font-size:11px; line-height:1.7; color:var(--tv-muted); border-top:1px solid var(--tv-line); padding-top:5px; }
+#travelator-screens .moment-details > summary { display:flex; align-items:center; gap:7px; min-height:36px; cursor:pointer; }
+#travelator-screens .moment-details summary svg { width:12px; height:12px; }
+#travelator-screens .moment-details[open] summary svg { transform:rotate(180deg); }
+#travelator-screens .moment-details a { display:inline; color:var(--tv-primary); overflow-wrap:anywhere; }
+#travelator-screens .moment-details a svg { display:inline; width:11px; height:11px; margin-left:4px; }
+#travelator-screens .moment-details > small { display:block; font-size:10px; margin:8px 0 10px; }
+#travelator-screens .moment-explore { display:flex; align-items:center; gap:8px; align-self:flex-start; border:0; background:none; color:var(--tv-primary); min-height:40px; font-size:12px; font-weight:550; margin-top:5px; padding:0; }
+#travelator-screens .moment-explore svg { width:14px; height:14px; }
+#travelator-screens .moments-more > summary { display:flex; align-items:center; gap:8px; min-height:46px; color:var(--tv-primary); font-size:12px; cursor:pointer; width:fit-content; margin:12px 0 5px; }
+#travelator-screens .moments-more > summary svg { width:14px; height:14px; }
+#travelator-screens .moments-note, #travelator-screens .moments-empty { color:var(--tv-muted); font-size:11px; line-height:1.7; margin:15px 0 0; }
+#travelator-screens .moments-empty { border:1px dashed var(--tv-line); padding:15px; border-radius:9px; margin:0; }
+#travelator-screens .moments-compact { margin-top:22px; border-top:1px solid var(--tv-line); padding-top:20px; }
+#travelator-screens .moments-compact .moments-heading { align-items:flex-start; flex-direction:column; gap:8px; }
+#travelator-screens .moments-compact .moments-heading h2 { font-size:18px; }
+#travelator-screens .moments-compact .moments-heading .new-eyebrow { display:none; }
+#travelator-screens .moments-compact .moments-grid { grid-template-columns:1fr; gap:10px; }
+#travelator-screens .moments-compact .moment-content { padding:15px; }
+#travelator-screens .moments-compact .moment-kind { margin-bottom:7px; }
+#travelator-screens .moments-compact .moment-content h3 { font-size:14px; }
+#travelator-screens .moments-compact .moment-description { margin:9px 0 10px; }
+#travelator-screens .builder-calendar { border-top:1px solid var(--tv-line); margin-top:24px; padding-top:12px; }
+#travelator-screens .builder-calendar > summary { display:flex; align-items:center; gap:8px; font-size:12px; min-height:42px; color:var(--tv-primary); cursor:pointer; }
+#travelator-screens .builder-calendar > summary svg { width:14px; height:14px; }
+#travelator-screens .builder-calendar .travel-moments { border-top:0; margin-top:5px; padding-top:10px; }
+#travelator-screens .builder-more-places { display:flex; align-items:center; gap:7px; min-height:44px; border:0; padding:8px 0; background:none; color:var(--tv-primary); font-size:12px; }
+#travelator-screens .builder-more-places svg { width:13px; height:13px; }
+#travelator-screens .builder-place-empty { color:var(--tv-muted); font-size:12px; line-height:1.6; }
+#travelator-screens .destination-preview-calendar { border-top:1px solid var(--tv-line); margin-top:23px; padding-top:8px; }
+#travelator-screens .destination-preview-calendar > summary { display:flex; align-items:center; gap:9px; min-height:55px; cursor:pointer; color:var(--tv-ink); font-size:12px; }
+#travelator-screens .destination-preview-calendar > summary > svg { width:15px; height:15px; color:var(--tv-primary); flex-shrink:0; }
+#travelator-screens .destination-preview-calendar > summary > svg:last-child { margin-left:auto; width:13px; color:var(--tv-muted); }
+#travelator-screens .destination-preview-calendar > summary small { display:block; font-size:10px; color:var(--tv-muted); margin-top:4px; }
+#travelator-screens .destination-preview-calendar .travel-moments { margin-top:0; padding-top:8px; border-top:0; }
+#travelator-screens .trip-plan .tp-stop-plan-action { margin:0; padding:10px 18px 14px; min-height:44px; justify-content:flex-start; }
+#travelator-screens .trip-plan .tp-stop-plan-action svg:last-child { margin-left:auto; }
+#travelator-screens .day-calendar { margin:15px 0; border:1px solid #e0dfd1; border-radius:10px; padding:6px 13px; background:#faf7ee; }
+#travelator-screens .day-calendar > summary { display:flex; align-items:center; gap:8px; font-size:12px; min-height:42px; cursor:pointer; color:#79613d; }
+#travelator-screens .day-calendar > summary svg { width:15px; height:15px; flex-shrink:0; }
+#travelator-screens .day-calendar > summary > span { margin-left:auto; padding:0 6px; border-radius:4px; background:#eee6d4; }
+#travelator-screens .day-calendar .travel-moments { margin:0; border:0; padding:5px 0 10px; }
+#travelator-screens .day-calendar > .moments-note { margin:0 0 10px; }
+#travelator-screens .tv-city-title .tv-redistribute { min-height:40px; border:0; padding:6px 0; background:transparent; font-size:12px; color:var(--tv-muted); box-shadow:none; }
+#travelator-screens .tv-city-title .tv-redistribute svg { width:14px; height:14px; }
+#travelator-screens .tv-required-visit { display:inline-flex; align-items:center; gap:5px; font-size:10px; line-height:1.5; color:var(--tv-muted); }
+#travelator-screens .tv-required-visit svg { width:12px; height:12px; color:var(--tv-primary); }
+#travelator-screens .tp-arrival-note { display:flex; align-items:flex-start; gap:7px; margin:0; padding:0 18px 12px; color:var(--tv-muted); font-size:11px; line-height:1.6; }
+#travelator-screens .tp-arrival-note svg { width:14px; height:14px; margin-top:2px; flex-shrink:0; color:var(--tv-primary); }
+#travelator-screens .arrival-day-note { border:1px solid #ddd9c7; border-radius:8px; background:#f7f2e7; padding:13px 15px; margin-bottom:16px; font-size:12px; line-height:1.7; color:var(--tv-ink); }
+#travelator-screens .arrival-day-note strong { font-weight:600; }
+#travelator-screens .arrival-day-note p { margin:5px 0 0; font-size:11px; color:var(--tv-muted); }
+@media (max-width:760px) {
+ html:has(.journey-builder) { scroll-padding-bottom:100px; }
+ #travelator-screens .journey-builder { padding-bottom:110px; }
+ #travelator-screens .builder-bottom { position:fixed; z-index:25; bottom:max(12px,env(safe-area-inset-bottom)); left:12px; right:12px; margin:0; border:1px solid #d9ddcf; border-radius:11px; padding:11px 14px; background:#fffffff5; backdrop-filter:blur(18px); box-shadow:0 8px 35px #26332c21; }
+ #travelator-screens .builder-bottom .builder-back { min-height:44px; }
+ #travelator-screens:has(.journey-builder) .tv-app-footer { padding-bottom:100px; }
+ #travelator-screens .date-discovery-intro { flex-direction:column; align-items:stretch; gap:20px; }
+ #travelator-screens .date-discovery-intro h2 { font-size:27px; }
+ #travelator-screens .date-period-toggle { width:100%; min-width:0; }
+ #travelator-screens .date-discovery-controls { grid-template-columns:1fr 1fr; padding:18px; gap:15px; }
+ #travelator-screens .date-apply { grid-column:1/-1; padding-top:0; }
+ #travelator-screens .moments-grid { grid-template-columns:1fr; }
+ #travelator-screens .moment-content { padding:19px; }
+ #travelator-screens .date-city-filter { display:block; }
+ #travelator-screens .date-city-filter > span { display:block; padding:10px 0 0; }
+ #travelator-screens .date-city-filter > label { min-width:0; }
+ #travelator-screens .destination-selection-dock { width:calc(100% - 24px); bottom:max(12px,env(safe-area-inset-bottom)); border-radius:11px; }
+ #travelator-screens .selection-dock-row { padding:10px 12px; gap:12px; }
+ #travelator-screens .selection-dock-summary { gap:7px; }
+ #travelator-screens .selection-dock-summary > svg:first-child { display:none; }
+ #travelator-screens .selection-dock-summary strong { font-size:11px; }
+ #travelator-screens .selection-dock-summary small { font-size:10px; max-width:190px; }
+ #travelator-screens .selection-dock-row > .tv-button { font-size:11px; padding:11px 12px; gap:6px; }
+ #travelator-screens .selection-dock-row > .tv-button svg { width:14px; height:14px; }
+ #travelator-screens .trip-stage-nav { gap:11px; padding:10px 12px 0; }
+ #travelator-screens .trip-stage-nav > button { font-size:11px; gap:5px; }
+ #travelator-screens .trip-stage-nav svg { margin-left:5px; }
+}
+@media (max-width:390px) {
+ #travelator-screens .selection-dock-row { gap:8px; }
+ #travelator-screens .selection-dock-summary small { max-width:125px; }
+ #travelator-screens .selection-dock-summary > svg:last-child { display:none; }
+ #travelator-screens .selection-dock-row > .tv-button { padding:10px; }
+ #travelator-screens .moments-heading { align-items:flex-start; flex-direction:column; gap:8px; }
+ #travelator-screens .trip-stage-nav { gap:8px; }
+ #travelator-screens .trip-stage-nav > button > span { display:none; }
+}
