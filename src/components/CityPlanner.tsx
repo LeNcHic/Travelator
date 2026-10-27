@@ -269,7 +269,7 @@ export default function CityPlanner({ input, plan, index, onCity, onChange, onBa
       <summary><MapPin /><span>Места на карте</span><ChevronDown /></summary>
       {mapOpen && <div className="cp-map-content"><div><PlacesMap city={city} ids={ids} assigned={assigned} selected={selected} onSelect={setSelected} />
         <p className="cp-map-legend">Цифры — этот день · точка — другие дни · плюс — без дня</p>
-        <p className="cp-estimate">Учебная схема. Линии показывают порядок посещений, а не дорогу по улицам.</p></div>
+        <p className="cp-estimate">Линии показывают порядок посещений. Маршрут по улицам может отличаться.</p></div>
         <div className="cp-map-place"><h4 id={`cp-map-place-${city}`} tabIndex={-1}>{place.name}</h4><p>{place.description}</p><span>≈ {duration(place.minutes)} · {placeDay < 0 ? "Без дня" : `День ${placeDay + 1}, ${date(placeDay)}`}</span>
           {placeDay === day ? <button onClick={() => setMoving(place.id)}><ArrowRightLeft />Перенести в другой день</button>
             : placeDay >= 0 ? <><button onClick={() => { chooseDay(placeDay); focusDay(); }}>Открыть день {placeDay + 1}<ArrowRight /></button><button onClick={() => setMoving(place.id)}>Перенести</button></>
@@ -282,7 +282,7 @@ export default function CityPlanner({ input, plan, index, onCity, onChange, onBa
       <p className="cp-estimate">События не добавляются в посещения автоматически.</p>
     </details>}
     <details className="cp-settings"><summary><SlidersHorizontal /><span>Настройки и расчёт времени</span><ChevronDown /></summary>
-      <p>Длительности взяты из учебного каталога. Между посещениями заложено по 30 минут. Часы работы, билеты и фактический транспорт пока не учитываются; экскурсии не включены в стоимость поездки.</p>
+      <p>Время посещений рассчитано ориентировочно. Между посещениями заложено по 30 минут. Часы работы, билеты и фактический транспорт пока не учитываются; экскурсии не включены в стоимость поездки.</p>
       <p>Можно заново распределить места по дням с учётом темпа поездки. Ручной план этого города изменится; действие можно отменить.</p>
       <button onClick={() => {
         const visits = { ...plan.visits }; delete visits[city];

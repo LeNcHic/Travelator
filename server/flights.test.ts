@@ -42,6 +42,34 @@ test("flight input is bounded, cached, coalesced and never returns a false empty
   await assert.rejects(retry(query)); assert.equal((await retry(query)).offers.length, 1); assert.equal(failedCalls, 2);
 });
 
+test("FlyAI route/date search failures are distinct from malformed data and a confirmed empty result", () => {
+  const unavailable = { status: 1, data: null, message: "搜索机票低价行业失败", systemMessage: null };
+  assert.throws(() => normalizeFlights(unavailable, {from:"san",to:"gui",date:"2026-11-04"}, now, true), (error: unknown) => {
+    assert.ok(error instanceof HotelApiError);
+    assert.equal(error.status,503); assert.equal(error.code,"FLIGHTS_SEARCH_FAILED");
+    assert.match(error.message,/по этому направлению на выбранную дату/);
+    assert.ok(!error.message.includes(unavailable.message),"provider diagnostics stay on the server");
+    return true;
+  });
+  assert.throws(() => normalizeFlights({status:0,data:null},query,now,true), {code:"FLIGHTS_BAD_RESPONSE"});
+  assert.deepEqual(normalizeFlights({status:0,data:{itemList:[]}},query,now,true).offers,[]);
+  assert.equal(normalizeFlights(raw(),query,now,true).offers.length,1,"an error on another route does not affect valid flights");
+});
+
+test("a failed FlyAI search is coalesced but never cached as zero flights; retry can recover", async () => {
+  let calls=0;
+  const search=createFlightSearch(async () => {
+    calls++;
+    return calls===1 ? {status:1,data:null,message:"搜索机票低价行业失败"} : raw();
+  },()=>now,"test-key");
+  const [one,two]=await Promise.allSettled([search(query),search(query)]);
+  for(const result of [one,two]) { assert.equal(result.status,"rejected"); if(result.status==="rejected") assert.equal(result.reason.code,"FLIGHTS_SEARCH_FAILED"); }
+  assert.equal(calls,1);
+  assert.equal((await search(query)).offers.length,1);
+  assert.equal(calls,2);
+  await search(query); assert.equal(calls,2,"only a successful result is reused");
+});
+
 function preferences() {
   const input = automaticPreferences({ ...defaultInput(), startDate: "2026-11-01", days: 10, budget: 30000, interests: ["city"], required: ["sha", "bei"], transport: "air" });
   input.journey = { ...input.journey!, flexibleDates: false, minStops: 2, maxStops: 2 }; return input;

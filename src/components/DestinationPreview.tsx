@@ -22,7 +22,7 @@ export default function DestinationPreview({ cityId, selected, atLimit, onSelect
       <div className="destination-preview-body">
         <h3>{note.title}</h3><p className="destination-preview-description">{city.description}</p>
         <div className="destination-preview-facts"><span><Clock3 />Ориентир: {note.stay}</span><span>{knowledge.season}</span></div>
-        <section className="destination-preview-places" aria-labelledby="destination-places-heading"><h3 id="destination-places-heading">Что посмотреть</h3><ul>{places.map(place => <li key={place.id}><MapPin aria-hidden="true" /><div><h4>{place.name}</h4><p>{place.description.replace(/^Учебный план /, "План ")}</p></div></li>)}</ul></section>
+        <section className="destination-preview-places" aria-labelledby="destination-places-heading"><h3 id="destination-places-heading">Что посмотреть</h3><ul>{places.map(place => <li key={place.id}><MapPin aria-hidden="true" /><div><h4>{place.name}</h4><p>{place.description}</p></div></li>)}</ul></section>
         {period && <details className="destination-preview-calendar"><summary><CalendarDays /><span>На выбранные даты<small>{periodLabel(period)}</small></span><ChevronDown /></summary><TravelMoments period={period} city={cityId} compact hideHeading /></details>}
         <details className="destination-preview-practical"><summary>Что учесть перед поездкой <ChevronDown /></summary><p>{knowledge.practical}</p><ul>{knowledge.sources.map(source => <li key={source.url}><a href={source.url} target="_blank" rel="noreferrer">{source.title}</a></li>)}</ul></details>
       </div>

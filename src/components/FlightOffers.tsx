@@ -4,22 +4,25 @@ import { ExternalLink, Plane, Search } from "lucide-react";
 import { airlineLabel, airportLabel, cabinLabel, flightQuoteKey, validFlightQuote, type FlightQuery, type FlightQuote, type FlightResult } from "../../shared/flights";
 import { duration, money } from "../lib/format";
 
-export default function FlightOffers({ query, selected, preview, onSelect }: {
+export default function FlightOffers({ query, selected, preview, onSelect, onDates }: {
   query: FlightQuery; selected?: FlightQuote;
   preview: (quote: FlightQuote) => { total: number; outdatedHotels: number; outdatedFlights: number; outdatedTrains: number } | null;
   onSelect: (quote: FlightQuote) => void;
+  onDates?: () => void;
 }) {
   const [response, setResponse] = useState<FlightResult | null>(null), [loading, setLoading] = useState(false), [error, setError] = useState("");
+  const [errorCode, setErrorCode] = useState("");
   const controller = useRef<AbortController | null>(null), key = JSON.stringify(query);
   const result = response && JSON.stringify(response.query) === key ? response : null;
-  useEffect(() => { setResponse(null); setError(""); setLoading(false); return () => controller.current?.abort(); }, [key]);
+  useEffect(() => { setResponse(null); setError(""); setErrorCode(""); setLoading(false); return () => controller.current?.abort(); }, [key]);
   async function search() {
     controller.current?.abort(); const active = new AbortController(); controller.current = active;
-    setLoading(true); setError(""); setResponse(null);
+    setLoading(true); setError(""); setErrorCode("");
+    setResponse(previous => previous?.offers.length ? previous : null);
     try {
       const res = await fetch("/api/flights/search", { method: "POST", headers: { "Content-Type": "application/json" }, body: key, signal: AbortSignal.any([active.signal, AbortSignal.timeout(40000)]) });
       const data = await res.json().catch(() => null);
-      if (!res.ok) throw new Error(data?.error?.message || "Поиск авиабилетов не ответил.");
+      if (!res.ok) { if (!active.signal.aborted) setErrorCode(typeof data?.error?.code === "string" ? data.error.code : ""); throw new Error(data?.error?.message || "Поиск авиабилетов не ответил."); }
       if (data?.source !== "flyai" || JSON.stringify(data.query) !== key || !Array.isArray(data.offers)
         || data.offers.length > 20 || !data.offers.every((offer: { quote: unknown }) => validFlightQuote(offer.quote))) throw new Error("Сервер вернул неполные авиабилеты. Повторите поиск.");
       if (!active.signal.aborted) setResponse(data);
@@ -27,9 +30,9 @@ export default function FlightOffers({ query, selected, preview, onSelect }: {
     finally { if (!active.signal.aborted) setLoading(false); }
   }
   return <section className="tv-flyai" aria-label="Реальные авиабилеты">
-    <div className="tv-flyai-intro"><span className="tv-eyebrow">АВИАБИЛЕТЫ · FLYAI / FLIGGY</span><h3>Прямые рейсы на дату переезда</h3><p>Один пассажир, экономкласс. Тариф из поиска заменит учебную цену в бюджете. Багаж, сборы, условия возврата и окончательную сумму уточняйте у поставщика.</p>
+    <div className="tv-flyai-intro"><span className="tv-eyebrow">АВИАБИЛЕТЫ · FLYAI / FLIGGY</span><h3>Прямые рейсы на дату переезда</h3><p>Один пассажир, экономкласс. Тариф из поиска уточнит стоимость поездки. Багаж, сборы, условия возврата и окончательную сумму уточняйте у поставщика.</p>
       <button className="tv-button tv-primary" disabled={loading} onClick={search}>{loading ? <BusyIcon /> : <Search />}{loading ? "Ищем рейсы…" : result || error ? "Обновить авиабилеты" : "Найти авиабилеты"}</button></div>
-    <div aria-live="polite" aria-busy={loading}>{error && <p className="tv-hotel-state" role="alert">{error}</p>}{result && <p className="tv-hint">Найдено рейсов: {result.offers.length}. Проверено {new Date(result.searchedAt).toLocaleString("ru-RU")}. Время местное, Китай.</p>}{result?.access === "trial" && <p>Для полных тарифов нужен личный ключ FlyAI на сервере.</p>}{result && !result.offers.length && <p className="tv-hotel-state">Подходящих рейсов не найдено. Попробуйте другую дату.</p>}</div>
+    <div aria-live="polite" aria-busy={loading}>{error && <div className="tv-hotel-state" role="alert"><p>{error}</p>{result?.offers.length ? <p>Ниже — рейсы с предыдущей проверки. Обновить их цены сейчас не удалось; время проверки указано отдельно.</p> : null}{onDates && ["FLIGHTS_SEARCH_FAILED", "FLIGHTS_BAD_RESPONSE", "FLIGHTS_NO_VALID_FARES"].includes(errorCode) && <button className="tv-button tv-secondary" onClick={onDates}>Изменить даты поездки</button>}</div>}{result && <p className="tv-hint">Найдено рейсов: {result.offers.length}. Проверено {new Date(result.searchedAt).toLocaleString("ru-RU")}. Время местное, Китай.</p>}{result?.access === "trial" && <p>Для полных тарифов нужен личный ключ FlyAI на сервере.</p>}{result && !result.offers.length && <div className="tv-hotel-state"><p>Подходящих прямых рейсов в ответе поиска нет. Можно проверить другую дату.</p>{onDates && <button className="tv-button tv-secondary" onClick={onDates}>Изменить даты поездки</button>}</div>}</div>
     <div className="tv-offers">{result?.offers.map(({ quote, url }) => {
       const changed = preview(quote), chosen = selected && flightQuoteKey(selected) === flightQuoteKey(quote);
       return <article className="tv-offer" key={flightQuoteKey(quote)}><div className="tv-offer-top"><span className="tv-offer-symbol"><Plane /></span><div><h3>{airlineLabel(quote.airlineCode)} · {quote.flightNumber}</h3><p>{airportLabel(quote.fromAirport)} → {airportLabel(quote.toAirport)}</p><p>{cabinLabel(quote.cabin)} · прямой рейс</p></div></div>
@@ -37,7 +40,7 @@ export default function FlightOffers({ query, selected, preview, onSelect }: {
         <div className="tv-offer-bottom"><div><strong>{money(quote.amount)}</strong><small>Тариф на одного пассажира · сборы уточняются</small>{changed && <small>Вся поездка ≈ {money(changed.total)}</small>}</div>{typeof url === "string" && url.startsWith("https://router.feizhu.com/ws/") && <a className="tv-button tv-secondary" href={url} target="_blank" rel="noopener noreferrer">На Fliggy<ExternalLink size={16} /></a>}</div>
         {!changed && <p className="tv-over-budget">Этот рейс не совпадает с календарём остановок. В автоматическом плане пока используем прибытие в тот же день.</p>}
         {changed && changed.outdatedHotels + changed.outdatedFlights + changed.outdatedTrains > 0 && <p className="tv-hint">Для изменившихся дат потребуется обновить часть предложений.</p>}
-        <button className="tv-button tv-primary" disabled={!changed} onClick={() => onSelect(quote)}>{chosen ? "Обновить тариф в плане" : "Выбрать рейс"}</button>
+        <button className="tv-button tv-primary" disabled={loading || !changed} onClick={() => onSelect(quote)}>{chosen ? "Обновить тариф в плане" : "Выбрать рейс"}</button>
       </article>;
     })}</div>
   </section>;

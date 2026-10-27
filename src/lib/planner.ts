@@ -289,7 +289,7 @@ export function generateRoutes(input: TripInput, events: VerifiedEvent[] = [], w
       errors: [
         Number.isFinite(minimumDuration)
           ? `Для этих остановок и транспорта нужно минимум ${daysText(minimumDuration)}. Добавьте ${daysText(Math.max(0, minimumDuration - input.days))}, уберите остановку или разрешите другой транспорт.`
-          : "В тестовом каталоге нет соединений для этих условий. Измените города или транспорт.",
+          : "Для этих условий не удалось подобрать переезды. Измените города или транспорт.",
       ],
     };
   return rankRoutePlans(candidates.map(c => c.plan), input, events, weather);

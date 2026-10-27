@@ -160,7 +160,7 @@ export async function readCliJson(cli: string, args: string[], env: NodeJS.Proce
     return JSON.parse(await readFile(outputPath, "utf8"));
   } catch (error) {
     if (error instanceof HotelApiError) throw error;
-    throw new HotelApiError(502, "FLYAI_UNAVAILABLE", "FlyAI сейчас не отвечает или ограничил доступ. Попробуйте позже. Тестовый каталог остаётся доступен.");
+    throw new HotelApiError(502, "FLYAI_UNAVAILABLE", "FlyAI сейчас не отвечает или ограничил доступ. Попробуйте позже. Каталог маршрутов остаётся доступен.");
   } finally {
     if (directory) await rm(directory, { recursive: true, force: true }).catch(() => {});
   }

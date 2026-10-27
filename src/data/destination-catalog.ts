@@ -29,11 +29,11 @@ export const baseCatalog = Object.fromEntries(cityIds.map(id => {
   const base: BaseRecord = {
     id, country: city.country ?? "CN", region: seed?.region ?? regions[id] ?? "", timezone: countries[city.country ?? "CN"]?.timezone ?? "", status: "draft", point: city.point,
     highlights: places.map(place => place.id), excursions: places.filter(place => /выезд|загород|паром|горы|высокогор/i.test(place.description)).map(place => place.id),
-    season: chinaKnowledge[id].season, stay: { ...range, reason: `${places.length} мест: ${places.filter(place => place.minutes >= 300).length} длительных выездов; остальные посещения можно чередовать с отдыхом. Диапазон — учебная рекомендация, не обязательный минимум.` },
+    season: chinaKnowledge[id].season, stay: { ...range, reason: `${places.length} мест: ${places.filter(place => place.minutes >= 300).length} длительных выездов; остальные посещения можно чередовать с отдыхом. Диапазон рекомендательный и может меняться под ваши пожелания.` },
     connections: [...new Set(tickets.filter(ticket => ticket.from === id && ticket.minutes > 0 && ticket.price > 0).map(ticket => ticket.to))],
     sources: chinaKnowledge[id].sources, reviewedAt: "2026-10-27",
     referenceScope: "Источники описывают основные объекты и характер направления. Полнота, открытие всех мест и доступность не подтверждены онлайн.",
-    estimates: ["приближённые координаты", "длительности посещений и выездов", "сезонные советы", "число дней", "связи, цены и расписания тестового каталога"],
+    estimates: ["приближённые координаты", "длительности посещений и выездов", "сезонные советы", "число дней", "ориентировочные переезды, цены и расписания"],
   };
   if (!catalogueProblems(base).length) base.status = "published";
   return [id, base];

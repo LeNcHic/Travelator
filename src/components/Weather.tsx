@@ -64,6 +64,6 @@ export function WeatherStay({ city, start, end }: { city: CityId; start: string;
     {(coverage.unknown > 0 || !days.length) && <p>Часть условий неизвестна. Отсутствие данных не означает комфортную погоду.</p>}
     <div className="weather-table-scroll"><table><caption>Погодные данные на даты остановки</caption><thead><tr><th>Дата</th><th>Тип данных</th><th>Воздух, °C</th><th>Осадки, мм</th><th>Ветер, км/ч</th><th>Видимость, км</th></tr></thead><tbody>{days.map(day => <tr key={day.date}><td>{displayDate(day.date)}</td><td>{weatherKindLabel[day.kind]}</td><td>{day.low ?? "?"}…{day.high ?? "?"}</td><td>{day.rainMm ?? "?"}</td><td>{day.windKmh ?? "?"}</td><td>{day.visibilityKm === null ? "неизвестна" : Math.round(day.visibilityKm)}</td></tr>)}</tbody></table></div>
     {cities[city].interest === "sea" && <p>Указана температура воздуха, не воды. Купание, состояние моря и открытие пляжа нужно проверять отдельно.</p>}
-    <small>Получено {days[0] ? new Date(days[0].updatedAt).toLocaleString("ru-RU") : "—"}. <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a>, CC BY 4.0. Длительности программы и оценка комфорта — учебная модель.</small>
+    <small>Получено {days[0] ? new Date(days[0].updatedAt).toLocaleString("ru-RU") : "—"}. <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a>, CC BY 4.0. Длительности программы и оценка комфорта рассчитаны ориентировочно.</small>
   </div></details>;
 }

@@ -160,7 +160,7 @@ export function createLiveRouteSearch(search: (query: FlyaiQuery) => Promise<Fly
       options.signal?.throwIfAborted();
       const ranked = rankRoutePlans(candidates, input);
       if (!candidates.length) ranked.errors = [templates.length
-        ? "Полный маршрут с ценами гостиниц и расписанием всех поездов не найден. Проверьте доступность дат, попробуйте другой порядок городов или сократите число остановок. Тестовые предложения не подставлялись."
+        ? "Полный маршрут с ценами гостиниц и расписанием всех поездов не найден. Проверьте доступность дат, попробуйте другой порядок городов или сократите число остановок. Неподтверждённые предложения не включены в расчёт."
         : "Не хватает дней для обязательных остановок и переездов на поездах. Увеличьте длительность или уберите остановку."];
       progress("Сравниваем стоимость и время найденных маршрутов…");
       return { source: "flyai", input, ...ranked, warnings: [...warnings].slice(0, 8), searchedAt: clock().toISOString(), partial,

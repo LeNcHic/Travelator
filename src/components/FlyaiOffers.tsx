@@ -94,7 +94,7 @@ export default function FlyaiOffers({ query, onSelectHotel, routeTotal, selected
       {train && onSelectTrain && <>
         {preview ? <p className="tv-hint">В плане: {preview.transferDays} дн. на переезды, {nightsText(preview.nights)} в гостиницах.
           {preview.daysChanged && " Дни в городах будут перераспределены после этого переезда."}
-          {(preview.outdatedHotels > 0 || preview.outdatedTrains > 0) && " Для изменившихся дат потребуется повторный поиск предложений; временно будут учтены тестовые варианты."}
+          {(preview.outdatedHotels > 0 || preview.outdatedTrains > 0) && " Для изменившихся дат потребуется повторный поиск предложений; стоимость временно будет рассчитана ориентировочно."}
           {" "}Добавляем 60 минут запаса на вокзалы; время отправления и прибытия — по расписанию FlyAI.</p>
           : <p className="tv-over-budget">Не хватает дней после переезда. Измените длительность остановок или поездки и повторите поиск: дату отправления выбранного поезда сохраняем.</p>}
         <button className="tv-button tv-primary" disabled={!preview} onClick={() => onSelectTrain(train)}>{selectedTrain ? "Обновить поезд в плане" : "Выбрать поезд"}</button>

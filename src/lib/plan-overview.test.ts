@@ -76,7 +76,7 @@ test("expired quotes fall back to the current calendar, while FlyAI retains its 
   const shifted = { ...input, startDate: "2026-11-03" };
   const data = planTransfer(schedule(selected, shifted)[0], shifted)!;
   assert.equal(data.estimatedSchedule, true); assert.equal(data.estimatedPrice, true);
-  assert.equal(data.start, "2026-11-06"); assert.equal(data.source, "Тестовое расписание");
+  assert.equal(data.start, "2026-11-06"); assert.equal(data.source, "Ориентировочное расписание");
   assert.ok(!render(selected, shifted).includes("G123"));
 });
 
@@ -104,7 +104,7 @@ test("ticket details open the current transport: flight alternatives for air and
     daysByInterest: { city: 5, nature: 0, sea: 0 }, requiredPlaces: [] });
   const air: RoutePlan = { ...plan, cities: ["sha", "bei"], hotels: [hotelsIn("sha")[0].id, hotelsIn("bei")[0].id], tickets: ["sha-bei-air-0"] };
   const flightHtml = picker(air, flightTrip), trainHtml = picker(plan);
-  assert.ok(flightHtml.includes('aria-pressed="true">Авиабилеты · реальные'));
+  assert.ok(flightHtml.includes('aria-pressed="true">Поиск рейсов'));
   assert.ok(flightHtml.includes("Найти авиабилеты"));
   assert.ok(!flightHtml.includes("Найти поезда до 2 часов"));
   assert.ok(trainHtml.includes('aria-pressed="true">RailGo'));
@@ -132,7 +132,7 @@ test("a hotel quote for different stay dates cannot retain a live offer badge or
     checkIn:stay.checkIn,checkOut:stay.checkOut,currency:"CNY",nightly:264,priceBasis:"nightly_search_estimate",searchedAt:"2026-10-27T06:39:50Z"})!;
   const html = render(quoted,{...input,startDate:"2026-11-03"});
   assert.ok(html.includes('hotel-source-outdated'));
-  assert.ok(html.includes('Даты изменились · учтена тестовая цена'));
+  assert.ok(html.includes('Даты изменились · стоимость ориентировочная'));
   assert.ok(!html.includes('hotel-source-flyai'));
   assert.ok(!html.includes('2026-10-27T06:39:50Z'));
   assert.equal(hotelStays(quoted,{...input,startDate:"2026-11-03"})[0].quote,undefined);

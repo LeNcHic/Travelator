@@ -19,6 +19,6 @@ export function planTransfer(row: ReturnType<typeof schedule>[number], input: Tr
     estimatedSchedule: !quote,
     estimatedPrice: quote?.source !== "flyai",
     source: quote ? `Расписание ${quote.source === "railgo" ? "RailGo" : "FlyAI"}`
-      : ticket.mode === "air" ? "Оценка перелёта" : "Тестовое расписание",
+      : ticket.mode === "air" ? "Оценка перелёта" : "Ориентировочное расписание",
   };
 }

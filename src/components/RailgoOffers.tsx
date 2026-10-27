@@ -33,7 +33,7 @@ export default function RailgoOffers({ query, selectedKey, preview, onSelect }: 
   return <section className="tv-flyai" aria-label="Расписание поездов RailGo">
     <div className="tv-flyai-intro"><span className="tv-eyebrow">RAILGO · ПОЕЗДА ДО 2 ЧАСОВ</span><h3>Короткий переезд на поезде</h3>
       <p>Проверяем дни курсирования и расписание на вашу дату. Время местное, Китай. Ещё 60 минут закладываем на вокзалы.</p>
-      <p>RailGo не возвращает цены и наличие мест. Сумма в бюджете — тестовый ориентир, её нужно уточнить перед покупкой. Расписание также может измениться.</p>
+      <p>RailGo не возвращает цены и наличие мест. Сумма в бюджете ориентировочная, её нужно уточнить перед покупкой. Расписание также может измениться.</p>
       <button className="tv-button tv-primary" disabled={loading} onClick={search}>{loading ? <BusyIcon /> : <Search />}{loading ? "Проверяем расписание…" : visible || error ? "Обновить расписание" : "Найти поезда до 2 часов"}</button>
     </div>
     <div aria-live="polite" aria-busy={loading}>
@@ -46,7 +46,7 @@ export default function RailgoOffers({ query, selectedKey, preview, onSelect }: 
       return <article className={`tv-offer ${selected ? "tv-offer-selected" : ""}`} key={trainQuoteKey(quote)}>
         <div className="tv-offer-top"><span className="tv-offer-symbol"><TrainFront /></span><div><h3>{quote.trainNumber}</h3><p>{quote.fromStation} → {quote.toStation}</p></div></div>
         <div className="tv-ticket-time"><strong>{quote.departure.slice(11, 16)}</strong><span>{duration(quote.minutes)}<span className="tv-ticket-line" /></span><strong>{quote.arrival.slice(11, 16)}{quote.arrival.slice(0, 10) !== query.date && <small>+1 день</small>}</strong></div>
-        <div className="tv-offer-bottom"><div><strong>≈ {money(quote.amount)}</strong><small>Тестовая оценка билета · цена RailGo неизвестна</small>{next && <small>Внутри Китая ≈ {money(next.total)}</small>}</div>
+        <div className="tv-offer-bottom"><div><strong>≈ {money(quote.amount)}</strong><small>Ориентировочная цена · тариф уточняется</small>{next && <small>Внутри Китая ≈ {money(next.total)}</small>}</div>
           <button className="tv-button tv-primary" disabled={!next} onClick={() => onSelect(quote)}>{selected ? "Обновить расписание" : "Выбрать поезд"}</button></div>
         {!next && <p className="tv-over-budget">Этот поезд не помещается в текущий календарь. Измените длительность поездки.</p>}
         {next?.changed && <p className="tv-hint">Дни в городах перераспределятся; гостиничные цены на изменившиеся даты нужно обновить.</p>}

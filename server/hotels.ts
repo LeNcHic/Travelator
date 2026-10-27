@@ -33,7 +33,7 @@ export function validateSearch(value: unknown): HotelSearchRequest {
 
 export function createHotelProviders(env: Record<string, string | undefined>) {
   const demo: HotelProvider = {
-    status: () => ({ id: "demo", available: true, state: "ready", message: "Тестовые предложения · доступность не проверяется" }),
+    status: () => ({ id: "demo", available: true, state: "ready", message: "Подборка гостиниц · стоимость ориентировочная" }),
     async search(request) {
       const nights = (dateValue(request.checkOut) - dateValue(request.checkIn)) / 86_400_000;
       return {

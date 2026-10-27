@@ -93,9 +93,9 @@ export default function PlanScreen({ input, plan, saved, onBack, onSave, onChang
       <div><Wallet /><span><strong>≈ {money(t.total)}</strong><small>жильё и переезды · 1 человек</small></span></div>
     </div>
     <RecommendationRefresh exact={exact} />
-    {t.outdatedHotels > 0 && <p className="tp-alert" role="status"><Info />Даты проживания изменились у {t.outdatedHotels} остановок. Выберите гостиницы заново: пока учтены тестовые цены.</p>}
+    {t.outdatedHotels > 0 && <p className="tp-alert" role="status"><Info />Даты проживания изменились у {t.outdatedHotels} остановок. Выберите гостиницы заново: стоимость пока ориентировочная.</p>}
     {t.outdatedFlights > 0 && <p className="tp-alert" role="status"><Info />Даты авиабилетов изменились. Прежние тарифы сняты; выберите рейсы заново.</p>}
-    {t.outdatedTrains > 0 && <p className="tp-alert" role="status"><Info />Даты {t.outdatedTrains} переездов изменились. Обновите билеты: прежние расписания сняты, цены пока тестовые.</p>}
+    {t.outdatedTrains > 0 && <p className="tp-alert" role="status"><Info />Даты {t.outdatedTrains} переездов изменились. Обновите билеты: прежние расписания сняты, стоимость пока ориентировочная.</p>}
     {t.total > input.budget && <p className="tp-alert" role="status"><Wallet />Выше бюджета на {money(t.total - input.budget)}. Можно выбрать другую гостиницу или билет.</p>}
     {view === "overview" && <div className="tp-notice" role="status" aria-live="polite">{notice}</div>}
 
@@ -168,7 +168,7 @@ export default function PlanScreen({ input, plan, saved, onBack, onSave, onChang
                     <p>{chinaKnowledge[row.city].season}</p><p>{chinaKnowledge[row.city].practical}</p>
                     {exact && <TravelMoments period={period} city={row.city} title={`${city.name}: в дни остановки`} compact />}
                     <ul>{chinaKnowledge[row.city].sources.map(source => <li key={source.url}><a href={source.url} target="_blank" rel="noreferrer">{source.title}</a></li>)}</ul>
-                    <p>{baseCatalog[row.city].region} · {baseCatalog[row.city].timezone}. База с ночёвкой; загородные места — отдельные выезды. Рекомендуемая остановка: {baseCatalog[row.city].stay.min}–{baseCatalog[row.city].stay.max} дн. {baseCatalog[row.city].stay.reason}</p><small>Справка обновлена {baseCatalog[row.city].reviewedAt}. {baseCatalog[row.city].referenceScope} {baseCatalog[row.city].estimates.join(", ")} — учебные оценки.</small>
+                    <p>{baseCatalog[row.city].region} · {baseCatalog[row.city].timezone}. База с ночёвкой; загородные места — отдельные выезды. Рекомендуемая остановка: {baseCatalog[row.city].stay.min}–{baseCatalog[row.city].stay.max} дн. {baseCatalog[row.city].stay.reason}</p><small>Справка обновлена {baseCatalog[row.city].reviewedAt}. {baseCatalog[row.city].referenceScope} {baseCatalog[row.city].estimates.join(", ")} — ориентировочные оценки.</small>
                   </details>
                 </div>
               </details>
@@ -211,7 +211,7 @@ export default function PlanScreen({ input, plan, saved, onBack, onSave, onChang
             {t.liveHotels > 0 && <p>Гостиницы Fliggy через FlyAI: {t.liveHotels} из {stays.length}. Поисковая цена за ночь умножена на число ночей. Состав номера, гостей и сборы нужно уточнить перед бронированием.</p>}
             {t.railgoTrains > 0 && <p>RailGo: расписание {t.railgoTrains} {plural(t.railgoTrains, ["поезда", "поездов", "поездов"])} на даты поездки. Тарифы и наличие мест неизвестны; цены билетов оценочные. Время указано по Китаю, с запасом 60 минут на вокзалы.</p>}
             {t.liveTrains > t.railgoTrains && <p>FlyAI: {t.liveTrains - t.railgoTrains} {plural(t.liveTrains - t.railgoTrains, ["расписание", "расписания", "расписаний"])} с поисковой ценой на одного пассажира. Наличие мест и итоговая сумма требуют проверки.</p>}
-            {(t.demoHotels > 0 || t.demoTickets > 0) && <p>Часть гостиниц или билетов использует тестовые данные. Предложения открываются в деталях города или переезда.</p>}
+            {(t.demoHotels > 0 || t.demoTickets > 0) && <p>Часть стоимости рассчитана ориентировочно. Уточнить гостиницы и билеты можно в деталях города или переезда.</p>}
             {internationalDays(input) > 0 && <p>На вылет из Москвы и возвращение предусмотрено по одному дню. Международные билеты ещё не подобраны. Внутренние перелёты используют поисковый тариф, если рейс выбран; остальные отмечены как оценка.</p>}
             {isAutomaticTrip(input) && <p>Дорогу не вычитаем из срока. Время переездов показано справочно; международные перелёты не подбираем.</p>}
             <p>Поисковые цены и расписания могут измениться; это план поездки, а не подтверждение бронирования.</p>

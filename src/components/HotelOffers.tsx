@@ -48,8 +48,8 @@ export default function HotelOffers({ index, input, plan, onChange, onClose }: {
   const status = statuses.find(item => item.id === provider);
   return <>
     <div className="tv-hotel-sources" role="group" aria-label="Источник гостиниц">
-      <button type="button" aria-pressed={provider === "demo"} onClick={() => setProvider("demo")}>Тестовый каталог</button>
-      <button type="button" aria-pressed={provider === "flyai"} onClick={() => setProvider("flyai")}>Fliggy · реальные</button>
+      <button type="button" aria-pressed={provider === "demo"} onClick={() => setProvider("demo")}>Подборка гостиниц</button>
+      <button type="button" aria-pressed={provider === "flyai"} onClick={() => setProvider("flyai")}>Поиск на Fliggy</button>
       <button type="button" aria-pressed={provider === "ostrovok"} onClick={() => setProvider("ostrovok")}>Островок <span>Скоро</span></button>
     </div>
     {provider === "flyai" ? <FlyaiOffers
@@ -62,14 +62,14 @@ export default function HotelOffers({ index, input, plan, onChange, onClose }: {
         onChange(next, `Выбрана гостиница ${quote.name}. Бюджет пересчитан по поисковой цене FlyAI; окончательную сумму уточните на Fliggy.`);
         onClose();
       }} /> : <>
-    {provider === "demo" && <p className="tv-demo-note">Учебные цены и гостиницы. Выбор добавляет гостиницу в план; бронирование и оплата недоступны.</p>}
+    {provider === "demo" && <p className="tv-demo-note">Варианты проживания для оценки бюджета. Точную стоимость на ваши даты можно уточнить в поиске на Fliggy.</p>}
     <div aria-live="polite" aria-busy={loading}>
       {loading && <p className="tv-hotel-state" role="status">Ищем гостиницы на даты остановки…</p>}
       {error && <div className="tv-hotel-state" role="alert"><p>{error}</p><button className="tv-button tv-secondary" onClick={() => setAttempt(value => value + 1)}><RefreshCw />Повторить поиск</button></div>}
       {!loading && !error && status && !status.available && <div className="tv-hotel-state">
         <BedDouble size={28} /><h3>Островок ещё не подключён</h3><p>{status.message}</p>
-        <p>Город и даты проживания уже берём из маршрута. Пока можно выбрать гостиницу из тестового каталога.</p>
-        <button className="tv-button tv-secondary" onClick={() => setProvider("demo")}>К тестовым предложениям</button>
+        <p>Город и даты проживания уже берём из маршрута. Выберите вариант из подборки или воспользуйтесь поиском на Fliggy.</p>
+        <button className="tv-button tv-secondary" onClick={() => setProvider("demo")}>Открыть подборку</button>
       </div>}
       {!loading && !error && result?.offers.length === 0 && <div className="tv-hotel-state"><h3>Гостиницы не найдены</h3><p>На эти даты нет предложений. Попробуйте другие даты проживания.</p></div>}
     </div>

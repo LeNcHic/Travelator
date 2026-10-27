@@ -19,7 +19,12 @@ export const flightArgs = (query: FlightQuery) => ["search-flight", "--origin", 
 
 export function normalizeFlights(raw: unknown, query: FlightQuery, now = new Date(), authenticated = false): FlightResult {
   const root = object(raw), items = object(root.data).itemList;
-  if (root.status !== 0 || !Array.isArray(items)) throw new HotelApiError(502, "FLIGHTS_BAD_RESPONSE", "Не удалось разобрать выдачу авиабилетов. Повторите поиск позже.");
+  // A failed provider search is not an empty timetable or a parsing failure.
+  // In particular, FlyAI can return { status: 1, data: null } for one route/date
+  // while other searches work. Do not cache it as "no flights" or expose raw diagnostics.
+  if (typeof root.status === "number" && root.status !== 0)
+    throw new HotelApiError(503, "FLIGHTS_SEARCH_FAILED", "FlyAI не смог выполнить поиск по этому направлению на выбранную дату. Наличие рейсов и цены сейчас не подтверждены. Повторите поиск позже или попробуйте другие даты.");
+  if (root.status !== 0 || !Array.isArray(items)) throw new HotelApiError(502, "FLIGHTS_BAD_RESPONSE", "FlyAI вернул неполную выдачу авиабилетов. Не удалось подтвердить расписание и цены. Повторите поиск позже.");
   const offers: FlightOffer[] = [];
   for (const value of items.slice(0, 20)) {
     const item = object(value), journeys = item.journeys;

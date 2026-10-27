@@ -52,18 +52,18 @@ export default function OfferPicker({
           : `${displayDate(addDays(chinaStartDate(input), row.transferStart))} · один пассажир`}
       </p>
       {type === "ticket" && <div className="tv-hotel-sources" role="group" aria-label="Источник билетов">
-        <button aria-pressed={source === "demo"} onClick={() => setSource("demo")}>Тестовые билеты</button>
+        <button aria-pressed={source === "demo"} onClick={() => setSource("demo")}>Оценка переезда</button>
         {input.transport !== "air" && <button aria-pressed={source === "railgo"} onClick={() => setSource("railgo")}>RailGo · до 2 часов</button>}
-        {input.transport !== "train" && <button aria-pressed={source === "flyai"} onClick={() => setSource("flyai")}>Авиабилеты · реальные</button>}
+        {input.transport !== "train" && <button aria-pressed={source === "flyai"} onClick={() => setSource("flyai")}>Поиск рейсов</button>}
       </div>}
       {type === "ticket" && source === "demo" && <p className="tv-demo-note">
-        Тестовый каталог. Выбор добавляет предложение в план; бронирование и
-        оплата недоступны.
+        Ориентировочные варианты для планирования бюджета. Расписание, тариф и
+        условия уточняются при поиске билетов.
       </p>}
       <div className="tv-offers">
         {type === "hotel"
           ? <HotelOffers index={index} input={input} plan={plan} onChange={onChange} onClose={onClose} />
-          : source === "flyai" ? <FlightOffers query={{ from: row.city, to: plan.cities[index + 1], date: addDays(chinaStartDate(input), row.transferStart) }} selected={row.flightQuote}
+          : source === "flyai" ? <FlightOffers query={{ from: row.city, to: plan.cities[index + 1], date: addDays(chinaStartDate(input), row.transferStart) }} selected={row.flightQuote} onDates={onDates}
               preview={quote => { const next = selectFlyaiFlight(plan, input, index, quote); return next ? totals(next, input) : null; }}
               onSelect={quote => { const next = selectFlyaiFlight(plan, input, index, quote); if (!next) return; onChange(next, `Рейс ${quote.flightNumber} добавлен в план. Учтён тариф FlyAI на одного пассажира; сборы и окончательная сумма требуют проверки.`); onClose(); }} />
           : source === "railgo" ? <RailgoOffers
@@ -78,7 +78,7 @@ export default function OfferPicker({
               onSelect={quote => {
                 const next = selectFlyaiTrain(plan, input, index, quote);
                 if (!next) return;
-                onChange(next, `Поезд ${quote.trainNumber} добавлен по расписанию RailGo. Стоимость билета — тестовая оценка; наличие мест неизвестно. Время местное, Китай.`);
+                onChange(next, `Поезд ${quote.trainNumber} добавлен по расписанию RailGo. Стоимость билета ориентировочная; наличие мест неизвестно. Время местное, Китай.`);
                 onClose();
               }} />
           : ticketsBetween(plan.cities[index], plan.cities[index + 1])
@@ -104,8 +104,7 @@ export default function OfferPicker({
                       </span>
                       <div>
                         <h3>
-                          {ticket.mode === "air" ? "Самолёт" : "Поезд"} ·{" "}
-                          {ticket.service}
+                          {ticket.mode === "air" ? "Перелёт" : "Переезд на поезде"}
                         </h3>
                         <p>{ticket.detail}</p>
                       </div>
@@ -147,7 +146,7 @@ export default function OfferPicker({
                           if (next) {
                             onChange(
                               next,
-                              `Билет ${ticket.service} добавлен в план. Бюджет и длительность остановок пересчитаны.`,
+                              `Переезд добавлен в план. Бюджет и длительность остановок пересчитаны.`,
                             );
                             onClose();
                           }

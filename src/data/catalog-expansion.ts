@@ -12,8 +12,8 @@ export const additionalScores = Object.fromEntries(destinationSeeds.map(base => 
   experiences: { city: base.interest === "city" ? 4 : 2.5, nature: base.interest === "nature" ? 4.2 : 2, sea: base.interest === "sea" ? 4 : 0 },
   appeal: 4, reason: base.places.slice(0, 3).map(place => place.name).join(", "),
 }])) as Record<ExpansionCityId, { experiences: Record<Interest, number>; appeal: number; reason: string }>;
-export const additionalHotelNames = Object.fromEntries(destinationSeeds.map(base => [base.id, ["Demo " + base.en + " Stay", "Demo " + base.en + " Garden", "Demo " + base.en + " Retreat"]])) as Record<ExpansionCityId, [string, string, string]>;
-export const additionalHotelAreas = Object.fromEntries(destinationSeeds.map(base => [base.id, ["Учебная центральная зона", "Учебная парковая зона", "Учебная зона отдыха"]])) as Record<ExpansionCityId, string[]>;
+export const additionalHotelNames = Object.fromEntries(destinationSeeds.map(base => [base.id, [base.en + " Stay", base.en + " Garden", base.en + " Retreat"]])) as Record<ExpansionCityId, [string, string, string]>;
+export const additionalHotelAreas = Object.fromEntries(destinationSeeds.map(base => [base.id, ["Центральный район", "Рядом с парком", "Зона отдыха"]])) as Record<ExpansionCityId, string[]>;
 export const additionalKnowledge = Object.fromEntries(destinationSeeds.map(base => [base.id, {
   season: base.season, practical: "База с ночёвкой — " + base.name + ". Загородные места посещают выездами; время, открытие и местный транспорт уточняются отдельно.",
   sources: [{ title: "Источник сведений о направлении", url: base.source }],
